@@ -146,6 +146,10 @@ Profiles should reference existing standards rather than duplicate their content
 
 Contains initialization instructions for applying the standards to an existing or new repository.
 
+Current bootstrap:
+
+- [`bootstrap/existing-project.md`](./bootstrap/existing-project.md) — initialize an existing repository using the catalog/profile model.
+
 The bootstrap process should inspect the target project, determine its real stack and structure, select only relevant standards, and adapt them to the project.
 
 ## Usage
@@ -161,7 +165,7 @@ https://github.com/DanilFaritovich/codex-development-standards
 
 Read catalog.yaml first.
 
-Use the fastapi-vue profile.
+Use the fastapi-vue-clean profile.
 
 Install only the standards required by that profile.
 
@@ -235,7 +239,7 @@ target-project/
     └── skills/
         ├── task-development-workflow/
         ├── python-testing/
-        ├── backend-layered-architecture/
+        ├── backend-clean-architecture/
         ├── fastapi/
         └── github-actions/
 ```
