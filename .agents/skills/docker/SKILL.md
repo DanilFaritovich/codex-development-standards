@@ -88,13 +88,15 @@ Internet / Browser
        |
        v
 Public gateway / reverse proxy
+       |  HTTP anti-flood
        |
        +---- static frontend
        |
        +---- /api/* -> backend:8000
                          |
-                         v
-                     database
+                         +----> database
+                         |
+                         +----> Redis (shared quota/cache state when enabled)
 ```
 
 Backend and database should normally live on an internal Docker network and should not publish host ports in production.
@@ -102,6 +104,88 @@ Backend and database should normally live on an internal Docker network and shou
 The browser cannot call an internal Docker hostname directly. Public API traffic must reach the backend through the public gateway/reverse proxy.
 
 Examples of public gateway technology include Caddy or Nginx.
+
+## Nginx API anti-flood
+
+When Nginx is used as the public gateway for a FastAPI application, place the general HTTP anti-flood limit at Nginx.
+
+Apply the limit to the public API prefix, normally `/api/`.
+
+Use a trusted client-IP key and configure:
+
+- a normal request rate;
+- a small burst;
+- HTTP 429 for rejected requests.
+
+Conceptual configuration:
+
+```nginx
+limit_req_zone $binary_remote_addr zone=api_per_ip:10m rate=<configured-rate>;
+
+location /api/ {
+    limit_req zone=api_per_ip burst=<configured-burst> nodelay;
+    limit_req_status 429;
+    proxy_pass http://backend;
+}
+```
+
+The exact rate and burst are project configuration.
+
+If Nginx is behind another trusted proxy/load balancer, configure Nginx real-IP handling correctly before using the client address as the limit key.
+
+Do not expose backend ports publicly simply to implement rate limiting.
+
+## Redis for distributed application quotas
+
+When the application profile enables distributed quota state, include Redis in Docker Compose.
+
+Redis should:
+
+- be reachable by backend containers on the internal network;
+- not publish a production host port unless operations explicitly require it;
+- have a healthcheck;
+- expose connection configuration through a backend environment variable such as `REDIS_URL`.
+
+Example service intent:
+
+```text
+gateway/nginx
+    |
+    v
+backend ----> redis
+    |
+    +-------> database
+```
+
+Backend startup should depend on Redis readiness when Redis is required for serving the configured use cases.
+
+Use Compose health-based dependencies where supported and appropriate.
+
+Do not store authoritative distributed quota state in backend container memory.
+
+Redis persistence is not automatically required for short-lived rate-limit/quota state; choose persistence based on project requirements.
+
+## Redis quota implementation
+
+A Redis-backed rolling/sliding quota should execute the critical consume operation atomically.
+
+For example, a Redis Lua script may:
+
+1. remove entries outside each active window;
+2. count current usage;
+3. reject if any configured limit is reached;
+4. calculate retry-after;
+5. record the new request;
+6. set/refresh key expiry.
+
+Do not replace required rolling-window semantics with naive fixed-window `INCR + EXPIRE`.
+
+Use keys that clearly separate:
+
+- quota scope/resource;
+- client identifier.
+
+Endpoints intended to share the same quota must use the same quota scope.
 
 ## Development ports
 
@@ -212,7 +296,10 @@ GitHub CI may perform:
 - complete image builds;
 - Compose validation;
 - migration startup checks;
+- Redis health/readiness when Redis is enabled;
 - service health checks;
+- Nginx configuration validation;
+- an API rate-limit smoke test when reasonable;
 - selected E2E scenarios.
 
 Do not use repeated full Docker logs as the normal local debugging loop.
