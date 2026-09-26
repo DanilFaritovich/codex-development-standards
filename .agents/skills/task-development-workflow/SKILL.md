@@ -133,7 +133,33 @@ For bug fixes, prefer:
 
 Do not create tests only to increase test count or coverage.
 
-## 7. Validate narrowly during development
+## 7. Normalize code before validation
+
+Before read-only lint/format/type/test validation, run the project's safe deterministic auto-fix step for the affected scope.
+
+Preferred interface:
+
+`make fix`
+
+or a component equivalent such as backend/frontend `make fix`.
+
+Typical safe fixes include:
+
+- formatter write mode;
+- safe lint auto-fixes;
+- import normalization.
+
+Do not run a formatter/linter check first merely to discover issues the configured auto-fix command is expected to fix automatically.
+
+Type checkers such as mypy, pyright, tsc, or vue-tsc are still validation tools, not generic auto-fixers. Write type-correct code during implementation, then run the smallest relevant type check after deterministic auto-fixes.
+
+Tests are also validation, not an auto-fix step.
+
+Preferred flow:
+
+`implement -> make fix -> targeted type/tests -> targeted corrections -> make check`
+
+## 8. Validate narrowly during development
 
 Run the smallest check capable of confirming the current change.
 
@@ -154,7 +180,7 @@ Normal development loop:
 
 Do not start with the complete CI pipeline.
 
-## 8. Handle failures with targeted reruns
+## 9. Handle failures with targeted reruns
 
 When a check fails:
 
@@ -173,7 +199,7 @@ Preferred flow:
 
 `broad check -> specific failure -> targeted fix -> targeted check -> broad check once`
 
-## 9. Do not repeat successful checks unnecessarily
+## 10. Do not repeat successful checks unnecessarily
 
 Do not rerun a successful check unless later changes could affect its result.
 
@@ -185,7 +211,7 @@ Examples:
 
 Every repeated validation must have a concrete technical reason.
 
-## 10. Run the standard local check
+## 11. Run the standard local check
 
 After implementation and targeted validation stabilize, run the repository's fast project check, normally:
 
@@ -200,7 +226,7 @@ It should usually cover lightweight checks such as:
 
 If it fails, return to targeted debugging. Rerun `make check` only after the specific failures are resolved.
 
-## 11. Run extended verification only when justified
+## 12. Run extended verification only when justified
 
 Use `make verify` only when the task requires broader local verification.
 
@@ -214,7 +240,7 @@ It may include:
 
 Do not run it merely because the target exists.
 
-## 12. Do not normally run full CI locally
+## 13. Do not normally run full CI locally
 
 The full CI target, normally `make ci`, is primarily for GitHub Actions.
 
@@ -227,13 +253,13 @@ Run it locally only when:
 
 Expected local flow:
 
-`targeted checks -> make check -> optional make verify`
+`make fix -> targeted checks -> make check -> optional make verify`
 
 Expected remote flow:
 
 `push -> GitHub Actions -> make ci`
 
-## 13. Review the final diff once
+## 14. Review the final diff once
 
 Do not inspect `git diff` after every edit.
 
@@ -250,7 +276,7 @@ Check for:
 - missing tests;
 - accidental formatting damage.
 
-## 14. Update documentation after implementation is stable
+## 15. Update documentation after implementation is stable
 
 Do not continuously rewrite documentation while implementation is changing.
 
@@ -272,7 +298,7 @@ Potential files:
 
 Use the documentation skill for detailed documentation rules.
 
-## 15. Commit and push
+## 16. Commit and push
 
 Stage only files belonging to the task.
 
@@ -289,7 +315,7 @@ Push only the task branch.
 
 Do not push normal task changes directly to `develop` or `main`.
 
-## 16. Pull Request and CI
+## 17. Pull Request and CI
 
 Prepare or create a Pull Request:
 
@@ -311,7 +337,7 @@ If CI fails:
 
 Do not ingest or reproduce unrelated successful CI logs.
 
-## 17. Stop before merge
+## 18. Stop before merge
 
 Codex must not automatically merge the Pull Request.
 
