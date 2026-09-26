@@ -35,36 +35,38 @@ Use the standards repository as an installation source. After installation, the 
    - a matching predefined profile; or
    - only the individual skills relevant to the detected stack.
 
-4. Do not load unrelated skills.
+4. Read only selected core `SKILL.md` files while choosing/adapting standards. Do not eagerly read optional `references/` files.
 
-5. Install the `standards-sync` skill for projects that will receive future standards updates.
+5. Install each selected skill as a complete local package, including its `references/` directory when present. Reference files should remain available locally and be read only when their topic applies.
 
-6. Create/update `.codex-standards.lock.yaml` using `bootstrap/codex-standards-lock.example.yaml` as the shape. Record the exact upstream commit, active profile/version, installed skills, and applicable optional skills.
+7. Install the `standards-sync` skill for projects that will receive future standards updates.
 
-7. Preserve existing project decisions when they are compatible with the selected standards.
+7. Create/update `.codex-standards.lock.yaml` using `bootstrap/codex-standards-lock.example.yaml` as the shape. Record the exact upstream commit, active profile/version, installed skills, and applicable optional skills.
 
-8. Do not introduce unused technologies merely because a profile supports them.
+8. Preserve existing project decisions when they are compatible with the selected standards.
 
-9. Create or adapt project-local development guidance:
+9. Do not introduce unused technologies merely because a profile supports them.
+
+10. Create or adapt project-local development guidance:
    - `AGENTS.md`;
    - `ARCHITECTURE.md` when architecture is non-trivial;
    - relevant local skills under `.agents/skills/` when the project uses them;
    - Makefiles or equivalent stable validation commands;
    - GitHub Actions CI when GitHub is the CI provider.
 
-10. Ask for user input only when a policy decision cannot be safely inferred, especially:
+11. Ask for user input only when a policy decision cannot be safely inferred, especially:
    - documentation language mode: English, Russian, or both;
    - license choice when no license exists;
    - destructive architecture changes;
    - adding a technology not already used by the project.
 
-11. Do not modify application business logic unless required to make the development infrastructure valid.
+12. Do not modify application business logic unless required to make the development infrastructure valid.
 
-12. Validate the installation using targeted checks first, then the project's normal fast check.
+13. Validate the installation using targeted checks first, then the project's normal fast check.
 
-13. Do not repeatedly run full local CI. Leave complete CI verification to GitHub Actions unless there is a concrete reason to run it locally.
+14. Do not repeatedly run full local CI. Leave complete CI verification to GitHub Actions unless there is a concrete reason to run it locally.
 
-14. Review the final diff once before commit/push.
+15. Review the final diff once before commit/push.
 
 ## Recommended standard profile
 
@@ -137,6 +139,8 @@ For subsequent updates, read `.codex-standards.lock.yaml` before fetching upstre
 
 Compare the locked upstream commit with the current upstream commit and inspect changed paths first.
 
-Fetch only changed installed skills, changed profile/catalog files, and newly applicable skills.
+Fetch only changed files inside installed skill packages, changed profile/catalog files, and newly applicable skill packages.
 
-Do not reread every profile skill when most standards are unchanged.
+Install changed reference files locally, but do not read their contents unless the affected project work requires that reference topic.
+
+Do not reread every profile skill or reference when most standards are unchanged.
