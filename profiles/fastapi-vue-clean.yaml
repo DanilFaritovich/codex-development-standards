@@ -1,5 +1,5 @@
 name: fastapi-vue-clean
-version: 4
+version: 5
 
 description: >
   Full-stack profile for a Python FastAPI backend using layered clean
@@ -9,6 +9,7 @@ description: >
 
 skills:
   - task-development-workflow
+  - standards-sync
   - backend-clean-architecture
   - python-testing
   - code-quality
@@ -27,6 +28,9 @@ optional_skills:
   - continuous-delivery
 
 defaults:
+  standards_sync:
+    lock_file: .codex-standards.lock.yaml
+    incremental: true
   development_branch: develop
   stable_branch: main
   backend:
