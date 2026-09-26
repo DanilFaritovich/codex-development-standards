@@ -30,6 +30,16 @@ skills:
     tags: [python, backend, fastapi, http, pydantic, dependency-injection]
     description: FastAPI presentation-boundary and dependency-wiring conventions.
 
+  api-guardrails:
+    path: .agents/skills/api-guardrails/SKILL.md
+    tags: [api, fastapi, rate-limit, validation, security, limits]
+    description: API rate limiting, request-size, input-length, pagination, and resource guardrails.
+
+  structured-logging:
+    path: .agents/skills/structured-logging/SKILL.md
+    tags: [logging, json, observability, loki, grafana, correlation-id]
+    description: Structured JSON logging and Loki/Grafana-compatible observability conventions.
+
   sqlalchemy-alembic:
     path: .agents/skills/sqlalchemy-alembic/SKILL.md
     tags: [python, database, sqlalchemy, alembic, postgres, sqlite]
@@ -77,6 +87,8 @@ profiles:
       - docker
       - github-actions
       - clean-architecture
+      - logging
+      - api-guardrails
     description: >
       Full-stack FastAPI + Vue profile with clean backend architecture,
-      testing, persistence, Docker, CI, documentation, and licensing.
+      testing, persistence, API guardrails, structured logging, Docker, CI, documentation, and licensing.
