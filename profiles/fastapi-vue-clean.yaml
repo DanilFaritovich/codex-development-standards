@@ -1,0 +1,48 @@
+name: fastapi-vue-clean
+version: 1
+
+description: >
+  Full-stack profile for a Python FastAPI backend using layered clean
+  architecture, ports and adapters, SQLAlchemy/Alembic persistence,
+  a Vue frontend, Docker packaging, GitHub Actions CI, documentation,
+  and explicit licensing rules.
+
+skills:
+  - task-development-workflow
+  - backend-clean-architecture
+  - python-testing
+  - fastapi
+  - sqlalchemy-alembic
+  - vue
+  - vue-testing
+  - docker
+  - github-actions
+  - documentation
+  - licensing
+
+defaults:
+  development_branch: develop
+  stable_branch: main
+  backend:
+    language: python
+    framework: fastapi
+    architecture: clean-layered
+    persistence: sqlalchemy
+    migrations: alembic
+  frontend:
+    framework: vue
+    backend_is_source_of_truth: true
+  ci:
+    provider: github-actions
+    local_full_ci: false
+  documentation:
+    languages:
+      - en
+      - ru
+
+adaptation:
+  preserve_existing_architecture_when_compatible: true
+  do_not_add_unused_technologies: true
+  do_not_overwrite_existing_license: true
+  require_project_specific_agents_md: true
+  require_architecture_md_when_architecture_is_nontrivial: true
