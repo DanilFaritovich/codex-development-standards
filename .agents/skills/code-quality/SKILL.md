@@ -221,6 +221,27 @@ Before final commit, run the project's normal root `make fix` when it is cheap a
 
 Do not run unrelated expensive suites merely because formatting changed in another component.
 
+## Compact command output
+
+Quality commands should produce the shortest useful output.
+
+Prefer tool options that:
+
+- suppress routine success noise;
+- retain errors and diagnostics;
+- avoid verbose progress output;
+- show concise summaries.
+
+For tests, use compact reporters/output where available.
+
+For type checking, linting, and formatting, avoid verbose/debug output unless required to diagnose a failure.
+
+Make targets should avoid echoing long command banners when that adds no value. Recipes may use quiet Make conventions such as `@` where appropriate.
+
+Do not hide actual diagnostics merely to reduce output.
+
+On failure, increase verbosity only for the failing command and only as much as needed.
+
 ## CI must never auto-fix
 
 GitHub Actions is an independent verification layer.
