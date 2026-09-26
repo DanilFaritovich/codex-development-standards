@@ -1,0 +1,82 @@
+version: 1
+
+repository:
+  name: codex-development-standards
+  url: https://github.com/DanilFaritovich/codex-development-standards
+
+selection:
+  instructions: >
+    Read this catalog first. Select only skills relevant to the target project
+    and requested task. Do not load every skill by default.
+
+skills:
+  task-development-workflow:
+    path: .agents/skills/task-development-workflow/SKILL.md
+    tags: [workflow, development, git, pull-request, token-efficiency]
+    description: Standard workflow for implementing one development task.
+
+  backend-clean-architecture:
+    path: .agents/skills/backend-clean-architecture/SKILL.md
+    tags: [backend, architecture, clean-architecture, ports, adapters, services]
+    description: Layered clean backend architecture with ports and adapters.
+
+  python-testing:
+    path: .agents/skills/python-testing/SKILL.md
+    tags: [python, testing, pytest, unit, integration, e2e]
+    description: Python testing structure, naming, fixtures, and execution conventions.
+
+  fastapi:
+    path: .agents/skills/fastapi/SKILL.md
+    tags: [python, backend, fastapi, http, pydantic, dependency-injection]
+    description: FastAPI presentation-boundary and dependency-wiring conventions.
+
+  sqlalchemy-alembic:
+    path: .agents/skills/sqlalchemy-alembic/SKILL.md
+    tags: [python, database, sqlalchemy, alembic, postgres, sqlite]
+    description: SQLAlchemy persistence and Alembic migration conventions.
+
+  vue:
+    path: .agents/skills/vue/SKILL.md
+    tags: [frontend, vue, typescript, api]
+    description: Vue frontend boundaries, state ownership, and backend integration.
+
+  vue-testing:
+    path: .agents/skills/vue-testing/SKILL.md
+    tags: [frontend, vue, testing, vitest, e2e]
+    description: Vue unit, component, integration, and E2E testing conventions.
+
+  docker:
+    path: .agents/skills/docker/SKILL.md
+    tags: [docker, compose, deployment, networking, health]
+    description: Docker packaging, networking, health, and one-command startup conventions.
+
+  github-actions:
+    path: .agents/skills/github-actions/SKILL.md
+    tags: [ci, github, github-actions, pull-request]
+    description: GitHub Actions CI conventions and local/remote validation split.
+
+  documentation:
+    path: .agents/skills/documentation/SKILL.md
+    tags: [documentation, readme, agents, architecture, english, russian]
+    description: Documentation timing, README language modes, AGENTS.md, and ARCHITECTURE.md rules.
+
+  licensing:
+    path: .agents/skills/licensing/SKILL.md
+    tags: [license, mit, proprietary]
+    description: License selection and preservation rules.
+
+profiles:
+  fastapi-vue-clean:
+    path: profiles/fastapi-vue-clean.yaml
+    tags:
+      - python
+      - fastapi
+      - vue
+      - sqlalchemy
+      - alembic
+      - docker
+      - github-actions
+      - clean-architecture
+    description: >
+      Full-stack FastAPI + Vue profile with clean backend architecture,
+      testing, persistence, Docker, CI, documentation, and licensing.
