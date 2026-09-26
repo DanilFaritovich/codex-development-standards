@@ -74,6 +74,7 @@ skills:
 
   python-testing:
     path: .agents/skills/python-testing
+code-quality
     tags: [python, testing, pytest]
     description: Python testing structure, naming, fixtures, and validation rules.
 
@@ -135,6 +136,7 @@ skills:
   - task-development-workflow
   - backend-clean-architecture
   - python-testing
+  - code-quality
   - fastapi
   - api-guardrails
   - structured-logging
