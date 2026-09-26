@@ -287,6 +287,22 @@ Do not repeatedly rebuild every image after changes that cannot affect image con
 
 Full build/start/health validation can run in GitHub Actions when it is expensive or verbose.
 
+## Command and log output
+
+Use compact Docker/Compose output during agent-driven checks.
+
+Prefer validation commands that return little or no output on success, for example configuration-check/quiet modes when supported.
+
+Do not dump full logs from every container after a successful startup.
+
+When a service fails:
+
+1. identify the failing service;
+2. inspect only its relevant recent logs;
+3. increase log scope/verbosity only if needed.
+
+Avoid full `docker compose logs` output for the entire stack unless the failure genuinely spans multiple services.
+
 ## CI relationship
 
 Local agent workflow should use targeted Docker checks.
