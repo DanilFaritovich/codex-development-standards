@@ -22,6 +22,9 @@ skills:
   - documentation
   - licensing
 
+optional_skills:
+  - continuous-delivery
+
 defaults:
   development_branch: develop
   stable_branch: main
@@ -61,6 +64,9 @@ defaults:
   ci:
     provider: github-actions
     local_full_ci: false
+  cd:
+    enabled_by_default: false
+    skill: continuous-delivery
   documentation:
     languages:
       - en
