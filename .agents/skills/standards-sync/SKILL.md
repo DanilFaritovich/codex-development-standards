@@ -48,16 +48,17 @@ For the first installation:
 
 1. read `catalog.yaml`;
 2. select the applicable profile or individual skills;
-3. read only those selected skills;
-4. install/adapt them locally;
-5. record the exact upstream commit SHA in the lock file;
-6. record the installed profile and skill names.
+3. read only the selected core `SKILL.md` files;
+4. install each selected skill package locally, including its colocated `references/` files when present;
+5. do not read reference-file contents into context during installation unless the current project adaptation actually requires that topic;
+6. record the exact upstream commit SHA in the lock file;
+7. record the installed profile and skill names.
 
-Do not scan every upstream skill.
+Do not scan unrelated upstream skills or eagerly load every reference.
 
 ## Single-fetch rule
 
-Within one standards synchronization run, fetch each upstream `SKILL.md` at most once.
+Within one standards synchronization run, fetch each required upstream file at most once, including core `SKILL.md` and changed reference files.
 
 After a successful fetch:
 
@@ -84,12 +85,13 @@ When a lock file already exists:
 6. fetch only:
    - `catalog.yaml` when it changed;
    - the active profile when it changed;
-   - installed skill files that changed;
-   - newly applicable skill files introduced by the updated profile;
-7. do not fetch unchanged installed skills;
-8. do not fetch unrelated skills;
-9. preserve compatible project-specific adaptations;
-10. update the lock file only after the project-local standards and required project changes are complete.
+   - changed files inside installed skill packages, including changed `references/`;
+   - newly applicable skill packages introduced by the updated profile;
+7. install changed reference files locally without loading their contents into context unless their topic is required for project adaptation;
+8. do not fetch unchanged installed skill files;
+9. do not fetch unrelated skills;
+10. preserve compatible project-specific adaptations;
+11. update the lock file only after the project-local standards and required project changes are complete.
 
 A repository compare operation or changed-file list is preferred over opening every upstream file.
 
@@ -101,8 +103,8 @@ If the active profile changed:
 
 1. read the new profile;
 2. compare its required/optional skill list with the lock file;
-3. fetch newly required skills;
-4. update changed required skills;
+3. fetch/install newly required skill packages, including their references;
+4. update only changed files inside already installed required skill packages;
 5. do not automatically enable optional skills unless they apply to the project;
 6. remove a local skill only when upstream/profile changes clearly make it obsolete and project-specific rules do not still require it.
 
@@ -172,7 +174,7 @@ Preferred:
 local lock
 -> upstream latest commit
 -> compare commits / changed paths
--> fetch changed profile/skills only
+-> fetch changed profile/skill-package files only
 ```
 
 Avoid:
@@ -188,7 +190,7 @@ catalog
 
 A standards sync is complete when:
 
-- applicable changed/new skills are installed;
+- applicable changed/new skill packages are installed, including their reference files;
 - project-specific adaptations are preserved;
 - affected project implementation/configuration is aligned when required;
 - the lock file points to the exact upstream commit used;
