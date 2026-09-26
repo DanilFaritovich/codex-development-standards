@@ -18,6 +18,8 @@ The standards are organized by responsibility:
 - **Testing** — how tests are structured, named, written, and validated.
 - **Architecture** — how application layers, boundaries, ports, adapters, and services are organized.
 - **Stacks** — conventions specific to technologies such as FastAPI, Vue, SQLAlchemy, Docker, and Airflow.
+- **Observability** — structured JSON logging and centralized log collection conventions.
+- **API guardrails** — rate limits, bounded request bodies, and input constraints.
 - **CI/CD** — automated validation and delivery conventions.
 - **Profiles** — predefined combinations of standards for common project types.
 
@@ -97,6 +99,8 @@ task-development-workflow
 backend-clean-architecture
 python-testing
 fastapi
+api-guardrails
+structured-logging
 sqlalchemy-alembic
 vue
 vue-testing
@@ -131,6 +135,8 @@ skills:
   - backend-clean-architecture
   - python-testing
   - fastapi
+  - api-guardrails
+  - structured-logging
   - sqlalchemy-alembic
   - vue
   - vue-testing
