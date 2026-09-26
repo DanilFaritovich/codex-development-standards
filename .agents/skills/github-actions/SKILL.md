@@ -67,7 +67,8 @@ checkout
 Local Codex workflow:
 
 ```text
-targeted checks
+make fix
+-> targeted checks
 -> make check
 -> optional make verify
 ```
@@ -79,6 +80,31 @@ make ci
 ```
 
 Do not require Codex to repeatedly reproduce the entire CI pipeline locally.
+
+## CI is read-only
+
+GitHub Actions must verify the committed state, not repair it.
+
+Do not run formatter/linter write modes in normal CI, including:
+
+- `ruff check --fix`;
+- `ruff format` in write mode;
+- `eslint --fix`;
+- `prettier --write`.
+
+Use read-only validation instead:
+
+- `ruff check`;
+- `ruff format --check`;
+- ESLint without `--fix`;
+- `prettier --check`;
+- mypy/pyright;
+- tsc/vue-tsc;
+- tests.
+
+If CI fails on formatting or an auto-fixable lint issue, fix it in the task branch and push the corrected commit.
+
+Do not allow CI to mutate tracked source files and then continue as if the repository itself were valid.
 
 ## CI scope
 
