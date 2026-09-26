@@ -290,6 +290,10 @@ If `make verify` already includes `make check`, run only `make verify` at the fi
 
 Project Makefiles/AGENTS.md should document target coverage clearly enough that Codex does not need to discover it by repeatedly running commands.
 
+A full suite should normally run only once per validation level in a stabilized task. During implementation, use changed/new targeted tests; let the aggregate target provide the broad pass.
+
+Do not run a full unit/integration/E2E suite immediately before an aggregate target known to execute that same complete suite.
+
 ## Avoid redundant validation
 
 Bad local flow:
