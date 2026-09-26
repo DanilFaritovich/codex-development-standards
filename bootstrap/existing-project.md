@@ -39,7 +39,7 @@ Use the standards repository as an installation source. After installation, the 
 
 5. Install each selected skill as a complete local package, including its `references/` directory when present. Reference files should remain available locally and be read only when their topic applies.
 
-7. Install the `standards-sync` skill for projects that will receive future standards updates.
+6. Install the `standards-sync` skill for projects that will receive future standards updates.
 
 7. Create/update `.codex-standards.lock.yaml` using `bootstrap/codex-standards-lock.example.yaml` as the shape. Record the exact upstream commit, active profile/version, installed skills, and applicable optional skills.
 
