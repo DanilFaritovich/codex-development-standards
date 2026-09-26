@@ -143,6 +143,24 @@ Do not feed large successful logs back into the agent.
 
 Do not rerun unrelated local checks unless the fix can affect them.
 
+## CI log volume
+
+Keep successful CI output compact.
+
+Prefer:
+
+- quiet dependency installation where supported;
+- concise test reporters;
+- non-verbose lint/typecheck output;
+- build summaries instead of full debug traces;
+- focused log retrieval for failed services/steps.
+
+Do not enable `--verbose`, debug logging, full container log dumps, or equivalent high-volume output by default.
+
+When a job fails, inspect only the failing step and the minimum surrounding logs required to diagnose it.
+
+If compact output is insufficient, increase verbosity only for that failing step.
+
 ## Caching
 
 Use standard dependency caches when useful and simple.
