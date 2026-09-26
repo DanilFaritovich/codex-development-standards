@@ -50,7 +50,7 @@ For the first installation:
 2. select the applicable profile or individual skills;
 3. read only the selected core `SKILL.md` files;
 4. install each selected skill package locally, including its colocated `references/` files when present;
-5. do not read reference-file contents into context during installation unless the current project adaptation actually requires that topic;
+5. when tooling supports copying/materializing reference files without rendering their contents, use that path; otherwise fetch each reference once for installation but do not analyze/reread it unless the current project adaptation requires that topic;
 6. record the exact upstream commit SHA in the lock file;
 7. record the installed profile and skill names.
 
@@ -64,7 +64,7 @@ After a successful fetch:
 
 - reuse the returned content for analysis and local installation/update;
 - keep using that same content if a local patch/write must be retried;
-- do not fetch the same skill again merely to verify the write.
+- do not fetch the same upstream file again merely to verify the write.
 
 A second fetch is justified only when:
 
@@ -87,7 +87,7 @@ When a lock file already exists:
    - the active profile when it changed;
    - changed files inside installed skill packages, including changed `references/`;
    - newly applicable skill packages introduced by the updated profile;
-7. install changed reference files locally without loading their contents into context unless their topic is required for project adaptation;
+7. install changed reference files locally with the least-context transfer supported by the available tooling; do not analyze/reread their contents unless their topic is required for project adaptation;
 8. do not fetch unchanged installed skill files;
 9. do not fetch unrelated skills;
 10. preserve compatible project-specific adaptations;
