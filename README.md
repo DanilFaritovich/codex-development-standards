@@ -74,9 +74,13 @@ skills:
 
   python-testing:
     path: .agents/skills/python-testing
-code-quality
     tags: [python, testing, pytest]
     description: Python testing structure, naming, fixtures, and validation rules.
+
+  code-quality:
+    path: .agents/skills/code-quality
+    tags: [quality, formatting, lint, types, autofix]
+    description: Safe auto-fix before read-only quality validation.
 
   fastapi:
     path: .agents/skills/fastapi
@@ -97,8 +101,10 @@ Possible skills:
 
 ```text
 task-development-workflow
+standards-sync
 backend-clean-architecture
 python-testing
+code-quality
 fastapi
 api-guardrails
 structured-logging
@@ -134,6 +140,7 @@ name: fastapi-vue-clean
 
 skills:
   - task-development-workflow
+  - standards-sync
   - backend-clean-architecture
   - python-testing
   - code-quality
@@ -257,6 +264,18 @@ target-project/
 
 After installation, Codex should use the local project instructions instead of repeatedly fetching this repository.
 
+Projects should also commit a `.codex-standards.lock.yaml` file recording the exact upstream commit, active profile/version, and installed skills.
+
+### Incremental standards sync
+
+For future updates, Codex should read the lock file first and compare its recorded upstream commit with the current standards commit.
+
+It should inspect the changed-file list and fetch only changed installed skills, changed profile/catalog files, and newly applicable skills.
+
+Do not reread every profile skill when most standards are unchanged.
+
+See [the lock-file example](./bootstrap/codex-standards-lock.example.yaml) and the `standards-sync` skill.
+
 This makes the project:
 
 - reproducible;
@@ -316,7 +335,7 @@ A project can intentionally upgrade to a newer standards release later.
 
 ## Updating installed standards
 
-When upgrading an existing project, compare its installed rules with the desired release and preserve project-specific changes.
+When upgrading an existing project, use the committed standards lock to compare the previously installed upstream revision with the desired revision and preserve project-specific changes.
 
 Example:
 
