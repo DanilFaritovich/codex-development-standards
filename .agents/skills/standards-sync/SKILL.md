@@ -201,7 +201,31 @@ When an authenticated GitHub connector/integration is available, prefer it for:
 - comparing revisions;
 - fetching catalog/profile/skill files.
 
-Do not verify the same upstream state independently through web search, `git ls-remote`, and the GitHub connector unless the primary mechanism failed or produced ambiguous results.
+Once an authoritative upstream channel has been selected, keep all upstream inspection on that channel for the rest of the synchronization.
+
+When the GitHub connector is selected:
+
+- use connector compare results as the source of truth for changed upstream paths;
+- fetch changed upstream files through the connector;
+- do not run local `git diff`, `git fetch`, `git ls-remote`, or equivalent Git commands to inspect the upstream standards commits;
+- do not depend on local availability of upstream Git objects;
+- do not trigger promisor/partial-clone object fetching merely to inspect upstream standards history.
+
+Local Git is reserved for the target project's own working tree, index, branches, commits, and final delivery operations.
+
+Preferred boundary:
+
+```text
+upstream standards:
+GitHub connector compare/fetch
+
+target project:
+local git status/diff/add/commit/push
+```
+
+Do not verify the same upstream state independently through web search, local Git, and the GitHub connector unless the selected upstream mechanism failed or produced ambiguous results.
+
+If a local Git command unexpectedly tries to fetch an upstream/promisor object during standards inspection, stop that path and continue from the already selected authoritative upstream source instead of retrying the network-dependent command.
 
 ## Efficient upstream access
 
