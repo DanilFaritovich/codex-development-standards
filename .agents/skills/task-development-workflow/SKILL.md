@@ -80,6 +80,34 @@ For large source/test files, avoid reading the whole file when the task concerns
 
 Use one file-listing/search pass to discover scope where practical instead of repeatedly enumerating the repository.
 
+## Continuation baseline
+
+When continuing an already-started task branch with existing task changes, establish the current task state as the continuation baseline before making new edits.
+
+During the continuation:
+
+- preserve existing task changes;
+- focus inspection and review on the delta introduced by the current continuation;
+- do not reread or re-review the entire old task diff by default.
+
+Revisit earlier task changes only when:
+
+- they were not previously reviewed;
+- new changes interact with them;
+- validation indicates a problem in that older scope;
+- the final delta cannot be understood safely without the earlier context.
+
+For large ongoing tasks, the goal is:
+
+```text
+existing reviewed task state
+-> current continuation delta
+-> validate/review the delta
+-> widen only when technically required
+```
+
+Do not treat every continuation as a fresh full-repository audit.
+
 ## 3. Determine the complete scope
 
 Before editing, identify:
@@ -362,6 +390,21 @@ compact command
 
 Do not request verbose output proactively "just in case".
 
+## Agent narration discipline
+
+Keep intermediate Codex narration short and decision-oriented.
+
+Report only information that materially helps the developer follow or steer the task, such as:
+
+- a meaningful finding;
+- a change in plan or scope;
+- a failure and its cause;
+- an important validation result.
+
+Do not restate the visible output of every successful tool call.
+
+Do not narrate routine fetches, reads, status commands, or successful checks when no decision changes.
+
 ## 14. Review the final diff once
 
 Do not inspect `git diff` after every edit.
@@ -377,7 +420,7 @@ git diff --cached --name-status
 
 If the patch is modest and can be read without truncation, review the complete diff once.
 
-If the patch is large, do not dump the entire patch into context. Review targeted diffs by risk area, for example:
+If the patch is large, do not dump the entire patch into context. When continuing an existing reviewed task, prioritize the current continuation delta. Review targeted diffs by risk area, for example:
 
 - application/architecture changes;
 - infrastructure/configuration;
