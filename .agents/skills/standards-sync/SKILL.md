@@ -120,8 +120,12 @@ When a lock file already exists:
 
 1. read the local lock file first;
 2. resolve the current upstream target ref/commit;
-3. if the upstream commit equals the locked `source.ref`, stop: standards are already current;
-4. compare the locked upstream commit with the new upstream commit;
+3. if the upstream commit equals the locked `source.ref`:
+   - inspect only the target project's pending changes under `.agents/skills/` and `.codex-standards.lock.yaml`;
+   - if there are no pending standards-sync changes, stop: standards are already current;
+   - if pending standards changes are consistent with an incomplete synchronization/delivery, do not refetch upstream and resume local validation, staging, commit, push, and PR/CI delivery as applicable;
+   - if the pending standards changes are unrelated or ambiguous, report the conflict instead of overwriting them;
+4. otherwise compare the locked upstream commit with the new upstream commit;
 5. inspect the changed-file list before fetching skill contents;
 6. fetch only:
    - `catalog.yaml` when it changed;
@@ -136,7 +140,7 @@ When a lock file already exists:
 
 A repository compare operation or changed-file list is preferred over opening every upstream file.
 
-If the locked commit equals the resolved upstream commit, stop the standards synchronization immediately. Do not fetch catalog/profile/skills only to reconfirm an unchanged revision.
+When the locked commit equals the resolved upstream commit, do not fetch catalog/profile/skills merely to reconfirm an unchanged revision. First distinguish a clean completed sync from pending local standards work, then either stop or resume delivery without restarting upstream synchronization.
 
 ## Profile changes
 
