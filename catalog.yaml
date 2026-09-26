@@ -9,11 +9,21 @@ selection:
     Read this catalog first. Select only skills relevant to the target project
     and requested task. Do not load every skill by default.
 
+sync:
+  skill: standards-sync
+  lock_file: .codex-standards.lock.yaml
+  strategy: compare-locked-ref-and-fetch-changed-skills
+
 skills:
   task-development-workflow:
     path: .agents/skills/task-development-workflow/SKILL.md
     tags: [workflow, development, git, pull-request, token-efficiency]
     description: Standard workflow for implementing one development task.
+
+  standards-sync:
+    path: .agents/skills/standards-sync/SKILL.md
+    tags: [workflow, standards, sync, lock, token-efficiency]
+    description: Incrementally synchronize installed standards by comparing the locked upstream ref and fetching only changed skills.
 
   backend-clean-architecture:
     path: .agents/skills/backend-clean-architecture/SKILL.md
