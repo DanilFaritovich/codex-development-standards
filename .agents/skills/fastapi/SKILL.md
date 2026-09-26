@@ -96,7 +96,11 @@ A dependency can compose:
 ```text
 Session
   -> SQLAlchemyRepository
-  -> ExternalConnector
+External client
+  -> Connector adapter
+Redis client
+  -> Quota adapter
+Repository/Connector/Quota ports
   -> ApplicationService
   -> Router
 ```
@@ -118,6 +122,63 @@ async def create_ticket(
 ```
 
 The specific mapping API may differ, but the router should remain transport-focused.
+
+## Client identity for application quotas
+
+When an application use case needs a client identifier for quota or usage policy, the FastAPI layer is responsible for deriving that identifier from the transport context.
+
+For anonymous traffic, this may be a trusted client IP.
+
+For authenticated traffic, prefer a stable account/user/client identifier when that is the intended quota key.
+
+FastAPI should pass only a plain value such as:
+
+```python
+client_id: str
+```
+
+into the application service.
+
+Do not pass `Request`, headers, sockets, or other FastAPI/ASGI objects into the application layer just so it can determine identity.
+
+When deployed behind a reverse proxy, derive the client IP only from trusted proxy configuration. Do not blindly trust arbitrary forwarding headers from the public internet.
+
+## Quota exception mapping
+
+Application quota failures are transport-independent application exceptions.
+
+For example, an application service may raise:
+
+```python
+LLMQuotaExceeded(retry_after=seconds)
+```
+
+FastAPI owns the HTTP mapping.
+
+The presentation layer should convert this to:
+
+```text
+HTTP 429 Too Many Requests
+Retry-After: <seconds>
+```
+
+using the project's normal error response schema.
+
+Do not raise `HTTPException` from application services.
+
+Do not define HTTP status codes inside application exceptions.
+
+## Process-local state
+
+Do not store distributed/business quota counters in:
+
+- `app.state`;
+- module-level dictionaries;
+- process-local in-memory limiter singletons.
+
+FastAPI `app.state` may hold shared infrastructure clients such as a Redis client or adapter instance when appropriate, but it must not be the authoritative quota data store.
+
+Quota state that must be shared across workers/instances belongs in a shared adapter/store.
 
 ## Error handling
 
