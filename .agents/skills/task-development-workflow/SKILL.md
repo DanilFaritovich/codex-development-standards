@@ -259,6 +259,65 @@ Expected remote flow:
 
 `push -> GitHub Actions -> make ci`
 
+## Command output discipline
+
+Every command executed by Codex should use the most compact output mode that still preserves actionable failures.
+
+This rule applies to:
+
+- tests;
+- linters;
+- formatters;
+- type checkers;
+- Git commands;
+- Make targets;
+- package-manager commands;
+- Docker / Docker Compose;
+- build tools;
+- migration tools;
+- CI/log inspection;
+- other CLI utilities.
+
+Prefer:
+
+- quiet/concise/summary flags;
+- short tracebacks;
+- machine-readable or filtered output when it is smaller and still useful;
+- scoped commands that inspect only affected files/services;
+- summaries for successful commands.
+
+Avoid by default:
+
+- verbose/debug modes;
+- full stack traces for successful checks;
+- full Docker/container logs;
+- complete dependency-install logs when a concise mode exists;
+- repeated command banners and echoed shell commands;
+- dumping large successful test suites into context.
+
+Examples:
+
+```text
+pytest -q --tb=short
+git status --short
+docker compose config -q
+```
+
+Use tool-specific compact modes rather than arbitrary truncation that could hide the real error.
+
+If a compact command fails and its output is insufficient to diagnose the problem, rerun only the failing command or affected scope with the minimum additional verbosity required.
+
+Preferred pattern:
+
+```text
+compact command
+  -> success: continue
+  -> failure with enough detail: fix
+  -> failure without enough detail: rerun only that command with more detail
+```
+
+Do not request verbose output proactively "just in case".
+
 ## 14. Review the final diff once
 
 Do not inspect `git diff` after every edit.
