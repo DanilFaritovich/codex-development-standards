@@ -32,8 +32,8 @@ skills:
 
   api-guardrails:
     path: .agents/skills/api-guardrails/SKILL.md
-    tags: [api, fastapi, rate-limit, validation, security, limits]
-    description: API rate limiting, request-size, input-length, pagination, and resource guardrails.
+    tags: [api, fastapi, rate-limit, quota, redis, nginx, validation, security, limits]
+    description: Two-layer HTTP anti-flood and application quota architecture, plus request/input resource guardrails.
 
   structured-logging:
     path: .agents/skills/structured-logging/SKILL.md
@@ -57,7 +57,7 @@ skills:
 
   docker:
     path: .agents/skills/docker/SKILL.md
-    tags: [docker, compose, deployment, networking, health]
+    tags: [docker, compose, deployment, networking, health, nginx, redis]
     description: Docker packaging, networking, health, and one-command startup conventions.
 
   github-actions:
