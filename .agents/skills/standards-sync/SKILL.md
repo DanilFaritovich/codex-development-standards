@@ -50,7 +50,7 @@ For the first installation:
 2. select the applicable profile or individual skills;
 3. read only the selected core `SKILL.md` files;
 4. install each selected skill package locally, including its colocated `references/` files when present;
-5. when tooling supports copying/materializing reference files without rendering their contents, use that path; otherwise fetch each reference once for installation but do not analyze/reread it unless the current project adaptation requires that topic;
+5. transfer reference assets without rendering their contents into model context whenever the available tooling supports direct copy/materialization; otherwise fetch each required reference once for installation and do not analyze/reread it unless the current project adaptation requires that topic;
 6. record the exact upstream commit SHA in the lock file;
 7. record the installed profile and skill names.
 
@@ -73,6 +73,43 @@ A second fetch is justified only when:
 
 Do not spend network/tool calls proving that a successfully fetched skill still contains the same text later in the same run.
 
+## Reference transfer without model context
+
+Reference files that do not require semantic adaptation are package assets, not default reasoning context.
+
+Preferred flow:
+
+```text
+changed paths
+-> transfer changed reference assets directly
+-> keep their contents out of model context
+-> read a reference only when its topic is required
+```
+
+When the available tool can copy, materialize, download, or otherwise transfer a reference file without returning its text to the model, prefer that mechanism over a content-returning fetch.
+
+If no such transfer is available:
+
+1. fetch each required reference at most once;
+2. write/install it immediately;
+3. do not summarize, inspect, compare, or reread it unless its topic is required for project adaptation.
+
+Do not load a reference merely to prove that it was installed.
+
+## Safe write fallback
+
+If the normal patch/write mechanism cannot modify an installed skill directory because of sandbox, mount, or permission restrictions:
+
+1. do not change filesystem permissions, ownership, or mount configuration;
+2. do not refetch upstream content that was already obtained;
+3. do not delete an existing `SKILL.md` before its replacement is ready to be written;
+4. prepare the complete replacement before mutating the existing installed file;
+5. prefer one permitted atomic or single-step replacement mechanism when available;
+6. if a multi-step fallback is unavoidable, preserve a valid existing skill until the replacement can be written successfully;
+7. if no permitted write mechanism exists, stop the synchronization and report the blocked paths.
+
+Never use a delete-first replacement that can leave the project without a valid installed skill after a later write failure.
+
 ## Update workflow
 
 When a lock file already exists:
@@ -87,7 +124,7 @@ When a lock file already exists:
    - the active profile when it changed;
    - changed files inside installed skill packages, including changed `references/`;
    - newly applicable skill packages introduced by the updated profile;
-7. install changed reference files locally with the least-context transfer supported by the available tooling; do not analyze/reread their contents unless their topic is required for project adaptation;
+7. install changed reference files locally using direct context-free transfer when supported; otherwise fetch each required reference once without semantic analysis unless its topic is required;
 8. do not fetch unchanged installed skill files;
 9. do not fetch unrelated skills;
 10. preserve compatible project-specific adaptations;
