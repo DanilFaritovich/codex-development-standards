@@ -37,30 +37,34 @@ Use the standards repository as an installation source. After installation, the 
 
 4. Do not load unrelated skills.
 
-5. Preserve existing project decisions when they are compatible with the selected standards.
+5. Install the `standards-sync` skill for projects that will receive future standards updates.
 
-6. Do not introduce unused technologies merely because a profile supports them.
+6. Create/update `.codex-standards.lock.yaml` using `bootstrap/codex-standards-lock.example.yaml` as the shape. Record the exact upstream commit, active profile/version, installed skills, and applicable optional skills.
 
-7. Create or adapt project-local development guidance:
+7. Preserve existing project decisions when they are compatible with the selected standards.
+
+8. Do not introduce unused technologies merely because a profile supports them.
+
+9. Create or adapt project-local development guidance:
    - `AGENTS.md`;
    - `ARCHITECTURE.md` when architecture is non-trivial;
    - relevant local skills under `.agents/skills/` when the project uses them;
    - Makefiles or equivalent stable validation commands;
    - GitHub Actions CI when GitHub is the CI provider.
 
-8. Ask for user input only when a policy decision cannot be safely inferred, especially:
+10. Ask for user input only when a policy decision cannot be safely inferred, especially:
    - documentation language mode: English, Russian, or both;
    - license choice when no license exists;
    - destructive architecture changes;
    - adding a technology not already used by the project.
 
-9. Do not modify application business logic unless required to make the development infrastructure valid.
+11. Do not modify application business logic unless required to make the development infrastructure valid.
 
-10. Validate the installation using targeted checks first, then the project's normal fast check.
+12. Validate the installation using targeted checks first, then the project's normal fast check.
 
-11. Do not repeatedly run full local CI. Leave complete CI verification to GitHub Actions unless there is a concrete reason to run it locally.
+13. Do not repeatedly run full local CI. Leave complete CI verification to GitHub Actions unless there is a concrete reason to run it locally.
 
-12. Review the final diff once before commit/push.
+14. Review the final diff once before commit/push.
 
 ## Recommended standard profile
 
@@ -88,6 +92,7 @@ A configured project may contain:
 project/
 ├── AGENTS.md
 ├── ARCHITECTURE.md
+├── .codex-standards.lock.yaml
 ├── README.md
 ├── README.ru.md          # when bilingual docs are enabled
 ├── Makefile
@@ -110,7 +115,7 @@ task
  -> AGENTS.md
  -> relevant files
  -> implementation
- -> tests
+ -> make fix
  -> targeted validation
  -> make check
  -> optional make verify
@@ -124,3 +129,14 @@ task
 ```
 
 Codex must not automatically merge the Pull Request unless the user explicitly requests that separate action.
+
+
+## Future standards updates
+
+For subsequent updates, read `.codex-standards.lock.yaml` before fetching upstream skills.
+
+Compare the locked upstream commit with the current upstream commit and inspect changed paths first.
+
+Fetch only changed installed skills, changed profile/catalog files, and newly applicable skills.
+
+Do not reread every profile skill when most standards are unchanged.
