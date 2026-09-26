@@ -94,16 +94,16 @@ skills:
 
 ```text
 task-development-workflow
+backend-clean-architecture
 python-testing
-vue-testing
-backend-layered-architecture
 fastapi
+sqlalchemy-alembic
 vue
-sqlalchemy
-postgres
+vue-testing
 docker
-airflow
 github-actions
+documentation
+licensing
 ```
 
 Каждый skill должен описывать одну переиспользуемую область ответственности.
@@ -112,7 +112,7 @@ github-actions
 
 - `python-testing` определяет структуру Python-тестов и соглашения pytest.
 - `fastapi` определяет правила, специфичные для FastAPI.
-- `backend-layered-architecture` определяет архитектуру независимо от конкретного framework.
+- `backend-clean-architecture` определяет layered/clean architecture с сервисами, портами и адаптерами независимо от конкретного framework.
 - `github-actions` определяет поведение CI.
 
 Не объединяйте несвязанные области в один большой файл инструкций.
@@ -124,19 +124,20 @@ Profiles объединяют переиспользуемые стандарт�
 Пример:
 
 ```yaml
-name: fastapi-vue
+name: fastapi-vue-clean
 
 skills:
   - task-development-workflow
+  - backend-clean-architecture
   - python-testing
-  - vue-testing
-  - backend-layered-architecture
   - fastapi
-  - sqlalchemy
-  - postgres
+  - sqlalchemy-alembic
   - vue
+  - vue-testing
   - docker
   - github-actions
+  - documentation
+  - licensing
 ```
 
 Profiles должны ссылаться на существующие стандарты, а не дублировать их содержимое.
@@ -154,19 +155,19 @@ Bootstrap-процесс должен изучить целевой проект
 Для проекта на FastAPI и Vue:
 
 ```text
-Initialize this repository using the development standards from:
+Инициализируй этот репозиторий, используя стандарты разработки из:
 
 https://github.com/DanilFaritovich/codex-development-standards
 
-Read catalog.yaml first.
+Сначала прочитай catalog.yaml.
 
-Use the fastapi-vue profile.
+Используй профиль fastapi-vue-clean.
 
-Install only the standards required by that profile.
+Загрузи и примени только те стандарты, которые входят в этот профиль.
 
-Adapt the standards to the actual repository structure, architecture, tools, and existing conventions.
+Адаптируй стандарты под фактическую структуру, архитектуру, инструменты и существующие соглашения текущего репозитория. Не копируй шаблонную структуру вслепую.
 
-Do not modify application business logic during initialization unless required for the development infrastructure.
+Во время инициализации не изменяй бизнес-логику приложения, если это не требуется непосредственно для настройки инфраструктуры разработки.
 ```
 
 ### Вариант 2 — описать стек проекта
@@ -176,11 +177,11 @@ Do not modify application business logic during initialization unless required f
 Пример:
 
 ```text
-Use the development standards from:
+Используй стандарты разработки из:
 
 https://github.com/DanilFaritovich/codex-development-standards
 
-Current project stack:
+Стек текущего проекта:
 
 - Backend: Python + FastAPI
 - ORM: SQLAlchemy
@@ -189,13 +190,13 @@ Current project stack:
 - Infrastructure: Docker
 - CI: GitHub Actions
 
-Read catalog.yaml first.
+Сначала прочитай catalog.yaml.
 
-Select only the standards relevant to this stack.
+Выбери только те стандарты, которые относятся к этому стеку.
 
-Do not read or install unrelated standards.
+Не читай и не устанавливай несвязанные стандарты.
 
-Adapt the selected standards to the current repository instead of copying generic structures blindly.
+Адаптируй выбранные стандарты под текущий репозиторий, его существующую архитектуру и инструменты вместо слепого копирования универсальной структуры.
 ```
 
 ### Вариант 3 — позволить Codex самостоятельно изучить проект
@@ -203,19 +204,19 @@ Adapt the selected standards to the current repository instead of copying generi
 Для существующего репозитория:
 
 ```text
-Inspect the current repository and determine its actual stack, architecture, testing tools, and CI configuration.
+Изучи текущий репозиторий и определи его фактический стек, архитектуру, инструменты тестирования и конфигурацию CI.
 
-Then use the standards from:
+После этого используй стандарты из:
 
 https://github.com/DanilFaritovich/codex-development-standards
 
-Read catalog.yaml first.
+Сначала прочитай только catalog.yaml.
 
-Select only the standards relevant to this project.
+Выбери только те стандарты, которые относятся к этому проекту.
 
-Do not introduce technologies that are not already used unless they are explicitly required.
+Не добавляй технологии, которые проект сейчас не использует, если они явно не требуются задачей.
 
-Install and adapt the selected standards for continued Codex development.
+Установи и адаптируй выбранные стандарты для дальнейшей разработки проекта через Codex.
 ```
 
 ## Рекомендуемая модель установки
@@ -305,15 +306,15 @@ codex-development-standards@v0.1.0
 Пример:
 
 ```text
-Compare the Codex development standards installed in this repository with the latest compatible release from:
+Сравни стандарты Codex, уже установленные в этом репозитории, с последней совместимой версией из:
 
 https://github.com/DanilFaritovich/codex-development-standards
 
-Inspect only the standards already installed in this project.
+Проверяй только те стандарты, которые уже установлены в текущем проекте.
 
-Preserve project-specific AGENTS.md rules.
+Сохрани проектные правила из AGENTS.md и не перезаписывай их универсальными значениями.
 
-Show meaningful differences before applying updates.
+Перед применением обновлений покажи только существенные отличия.
 ```
 
 ## Вклад в проект
