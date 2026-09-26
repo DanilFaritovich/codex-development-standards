@@ -107,6 +107,58 @@ Ports describe required behavior, not implementation details.
 
 Do not expose SQLAlchemy sessions, HTTP response objects, or framework-specific types through application ports unless the project has an explicit reason.
 
+## Resource/quota ports
+
+Application-level resource policies that depend on shared infrastructure should be expressed as ports when they are required by a use case.
+
+Examples:
+
+- request/operation quota;
+- distributed lock;
+- idempotency store;
+- usage counter.
+
+For an LLM quota:
+
+```python
+from typing import Protocol
+
+class LLMQuotaPort(Protocol):
+    async def consume(self, client_id: str) -> None:
+        ...
+```
+
+The application service calls the port before the expensive operation.
+
+A concrete Redis implementation belongs in adapters/infrastructure.
+
+Do not place this quota in the domain layer when it represents infrastructure/resource usage rather than a domain invariant.
+
+Do not let the application layer depend on Redis types.
+
+## Application exceptions and transport mapping
+
+Application/use-case failures should use framework-independent exceptions.
+
+For example:
+
+```python
+class LLMQuotaExceeded(Exception):
+    retry_after: int
+```
+
+The application exception may carry transport-neutral data such as `retry_after`, but it must not depend on:
+
+- FastAPI;
+- `Request`;
+- `HTTPException`;
+- HTTP status codes;
+- response headers.
+
+The presentation layer decides that `LLMQuotaExceeded` maps to HTTP 429 and a `Retry-After` header.
+
+This keeps the same use case callable from HTTP, CLI, jobs, or another transport without importing FastAPI.
+
 ## Repositories
 
 Repositories are adapters for persistence.
@@ -234,9 +286,14 @@ FastAPI dependency / composition root
                   |   SQLAlchemyDepartmentRepository
                   |
                   +--> TicketRouting port
+                  |       ^
+                  |       |
+                  |   LLMConnector
+                  |
+                  +--> LLMQuotaPort
                           ^
                           |
-                      LLMConnector
+                    RedisLLMQuotaAdapter
 ```
 
 Application services should receive dependencies rather than construct concrete adapters themselves.
