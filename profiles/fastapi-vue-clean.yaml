@@ -1,5 +1,5 @@
 name: fastapi-vue-clean
-version: 2
+version: 3
 
 description: >
   Full-stack profile for a Python FastAPI backend using layered clean
@@ -40,8 +40,24 @@ defaults:
     loki_compatible: true
   api:
     rate_limiting: true
+    edge_http_rate_limit: true
+    edge_scope: /api/
+    edge_identity: client_ip
+    edge_burst: true
     bounded_input: true
     configurable_limits: true
+    expensive_operation_quota:
+      layer: application
+      shared_store: redis
+      algorithm: sliding-window
+      atomic_consume: true
+  infrastructure:
+    redis:
+      enabled_for_shared_quota: true
+      healthcheck: true
+    reverse_proxy:
+      api_anti_flood: true
+      preferred_when_present: nginx
   ci:
     provider: github-actions
     local_full_ci: false
