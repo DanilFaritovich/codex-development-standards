@@ -60,7 +60,25 @@ Read `ARCHITECTURE.md` when the task affects architecture, module boundaries, pe
 
 Preferred flow:
 
-`AGENTS.md -> determine scope -> read relevant files`
+`AGENTS.md -> determine scope -> search for relevant symbols/paths -> read only relevant ranges`
+
+## Context-efficient repository inspection
+
+Search before reading large files.
+
+Prefer symbol/pattern discovery such as:
+
+```text
+rg -n "RelevantClass|relevant_setting|relevant_endpoint" affected/path
+```
+
+then open only the useful surrounding ranges.
+
+Do not use commands such as `rg -n "^"`, `cat` over many files, or equivalent patterns merely to dump complete files into context.
+
+For large source/test files, avoid reading the whole file when the task concerns only a few symbols or sections. Read the relevant range first and expand only when dependencies require it.
+
+Use one file-listing/search pass to discover scope where practical instead of repeatedly enumerating the repository.
 
 ## 3. Determine the complete scope
 
@@ -179,6 +197,32 @@ Normal development loop:
 `edit -> targeted check -> fix -> targeted check`
 
 Do not start with the complete CI pipeline.
+
+## Validation deduplication
+
+Before running broad checks, know what the project's aggregate targets already include.
+
+Do not run a complete suite immediately before an aggregate target that will run the same suite again.
+
+Examples:
+
+- if `make check` includes all unit tests, use only changed/new targeted unit tests during implementation, then let `make check` run the full unit suite once;
+- if `make verify` includes the full integration and E2E suites, do not run those complete suites separately immediately beforehand;
+- if `make verify` already invokes `make check`, do not run both unless a concrete failure-isolation reason requires it.
+
+Preferred validation plan:
+
+```text
+changed/new targeted tests
+-> make fix
+-> make check once
+-> make verify once only when justified
+-> infrastructure-specific smoke once when required and not already included
+```
+
+A broader target may intentionally repeat a small targeted test; avoid repeating entire suites.
+
+Do not trade correctness for fewer checks. Remove only redundant coverage, not independent validation.
 
 ## 9. Handle failures with targeted reruns
 
@@ -322,7 +366,27 @@ Do not request verbose output proactively "just in case".
 
 Do not inspect `git diff` after every edit.
 
-Before documentation, commit, and push, perform one final review of the complete diff.
+Start final review with compact metadata:
+
+```text
+git status --short
+git diff --cached --check
+git diff --cached --stat
+git diff --cached --name-status
+```
+
+If the patch is modest and can be read without truncation, review the complete diff once.
+
+If the patch is large, do not dump the entire patch into context. Review targeted diffs by risk area, for example:
+
+- application/architecture changes;
+- infrastructure/configuration;
+- tests;
+- security-sensitive code.
+
+Documentation-only files usually need only targeted review when their content is relevant.
+
+If a full diff is truncated, do not immediately repeat another large full diff. Inspect only the missing/high-risk paths.
 
 Check for:
 
