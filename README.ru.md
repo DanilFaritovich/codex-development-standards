@@ -106,6 +106,7 @@ vue
 vue-testing
 docker
 github-actions
+continuous-delivery
 documentation
 licensing
 ```
@@ -147,6 +148,8 @@ skills:
 ```
 
 Profiles должны ссылаться на существующие стандарты, а не дублировать их содержимое.
+
+Опциональные стандарты можно перечислять отдельно, если они нужны не каждому проекту. Например, `continuous-delivery` для `fastapi-vue-clean` подключается только тогда, когда проект действительно разворачивается в production.
 
 ### `bootstrap/`
 
