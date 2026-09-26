@@ -94,16 +94,16 @@ Possible skills:
 
 ```text
 task-development-workflow
+backend-clean-architecture
 python-testing
-vue-testing
-backend-layered-architecture
 fastapi
+sqlalchemy-alembic
 vue
-sqlalchemy
-postgres
+vue-testing
 docker
-airflow
 github-actions
+documentation
+licensing
 ```
 
 Each skill should focus on one reusable concern.
@@ -112,7 +112,7 @@ For example:
 
 - `python-testing` should define Python test structure and pytest conventions.
 - `fastapi` should define FastAPI-specific rules.
-- `backend-layered-architecture` should define architecture independently of a particular framework.
+- `backend-clean-architecture` should define layered/clean architecture with services, ports, and adapters independently of a particular framework.
 - `github-actions` should define CI behavior.
 
 Avoid putting unrelated concerns into one large instruction file.
@@ -124,19 +124,20 @@ Profiles combine reusable standards for common project types.
 Example:
 
 ```yaml
-name: fastapi-vue
+name: fastapi-vue-clean
 
 skills:
   - task-development-workflow
+  - backend-clean-architecture
   - python-testing
-  - vue-testing
-  - backend-layered-architecture
   - fastapi
-  - sqlalchemy
-  - postgres
+  - sqlalchemy-alembic
   - vue
+  - vue-testing
   - docker
   - github-actions
+  - documentation
+  - licensing
 ```
 
 Profiles should reference existing standards rather than duplicate their contents.
