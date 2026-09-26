@@ -234,6 +234,12 @@ Recommended pytest form:
 
 `pytest -q --tb=short`
 
+Do not enable verbose test output by default.
+
+If a failing test cannot be diagnosed from the compact traceback, rerun only that test with the minimum additional detail required.
+
+Do not print captured logs/stdout for passing tests unless the task explicitly needs them.
+
 During development, run the narrowest useful target:
 
 - one test node;
