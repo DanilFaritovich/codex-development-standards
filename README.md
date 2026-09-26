@@ -1,5 +1,7 @@
 # Codex Development Standards
 
+**English** | [Русский](./README.ru.md)
+
 Reusable development workflows, testing conventions, architecture guidelines, and CI/CD standards for Codex-driven software projects.
 
 **Repository:** https://github.com/DanilFaritovich/codex-development-standards
@@ -41,6 +43,7 @@ Only the standards relevant to a project should be installed.
 ```text
 .
 ├── README.md
+├── README.ru.md
 ├── catalog.yaml
 ├── .agents/
 │   └── skills/
