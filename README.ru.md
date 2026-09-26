@@ -74,9 +74,13 @@ skills:
 
   python-testing:
     path: .agents/skills/python-testing
-code-quality
     tags: [python, testing, pytest]
     description: Python testing structure, naming, fixtures, and validation rules.
+
+  code-quality:
+    path: .agents/skills/code-quality
+    tags: [quality, formatting, lint, types, autofix]
+    description: Safe auto-fix before read-only quality validation.
 
   fastapi:
     path: .agents/skills/fastapi
@@ -97,8 +101,10 @@ code-quality
 
 ```text
 task-development-workflow
+standards-sync
 backend-clean-architecture
 python-testing
+code-quality
 fastapi
 api-guardrails
 structured-logging
@@ -134,6 +140,7 @@ name: fastapi-vue-clean
 
 skills:
   - task-development-workflow
+  - standards-sync
   - backend-clean-architecture
   - python-testing
   - code-quality
@@ -257,6 +264,18 @@ target-project/
 
 После установки Codex должен использовать локальные инструкции проекта вместо повторного обращения к этому репозиторию.
 
+Также в проекте следует коммитить `.codex-standards.lock.yaml` с точным upstream commit, активным profile/version и списком установленных skills.
+
+### Инкрементальная синхронизация standards
+
+При следующих обновлениях Codex должен сначала читать lock-файл и сравнивать записанный в нём upstream commit с актуальным commit репозитория стандартов.
+
+После этого нужно посмотреть список изменённых файлов и загрузить только изменившиеся установленные skills, изменившиеся profile/catalog и новые применимые skills.
+
+Не нужно заново читать весь профиль, если большинство standards не изменилось.
+
+См. [пример lock-файла](./bootstrap/codex-standards-lock.example.yaml) и skill `standards-sync`.
+
 Это делает проект:
 
 - воспроизводимым;
@@ -316,7 +335,7 @@ codex-development-standards@v0.1.0
 
 ## Обновление установленных стандартов
 
-При обновлении существующего проекта следует сравнивать его установленные правила с нужной версией и сохранять проектные изменения.
+При обновлении существующего проекта следует использовать standards lock, сравнивать ранее установленный upstream revision с нужной версией и сохранять проектные изменения.
 
 Пример:
 
