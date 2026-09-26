@@ -55,6 +55,23 @@ For the first installation:
 
 Do not scan every upstream skill.
 
+## Single-fetch rule
+
+Within one standards synchronization run, fetch each upstream `SKILL.md` at most once.
+
+After a successful fetch:
+
+- reuse the returned content for analysis and local installation/update;
+- keep using that same content if a local patch/write must be retried;
+- do not fetch the same skill again merely to verify the write.
+
+A second fetch is justified only when:
+
+- the first fetch failed and no content was obtained; or
+- the selected upstream ref/commit changed during the synchronization.
+
+Do not spend network/tool calls proving that a successfully fetched skill still contains the same text later in the same run.
+
 ## Update workflow
 
 When a lock file already exists:
@@ -76,6 +93,8 @@ When a lock file already exists:
 
 A repository compare operation or changed-file list is preferred over opening every upstream file.
 
+If the locked commit equals the resolved upstream commit, stop the standards synchronization immediately. Do not fetch catalog/profile/skills only to reconfirm an unchanged revision.
+
 ## Profile changes
 
 If the active profile changed:
@@ -86,6 +105,21 @@ If the active profile changed:
 4. update changed required skills;
 5. do not automatically enable optional skills unless they apply to the project;
 6. remove a local skill only when upstream/profile changes clearly make it obsolete and project-specific rules do not still require it.
+
+## Do not verify byte-for-byte equality
+
+Do not require local project skills to be byte-for-byte identical to upstream.
+
+Forbidden verification patterns include:
+
+- refetching every skill to compare Git blob SHA values;
+- `git hash-object` checks performed only to prove upstream equality;
+- changing files solely to match upstream trailing newlines or insignificant whitespace;
+- treating local/upstream blob mismatch as an error by itself.
+
+The lock file records the upstream revision that was used. Project-local skills may contain compatible project-specific adaptations, so identical blob hashes are not a correctness requirement.
+
+Validate semantic/project compatibility instead of byte identity.
 
 ## Local adaptations
 
@@ -117,6 +151,18 @@ upstream change: code-quality only
 ```
 
 If several changed skills affect architecture/infrastructure, widen the audit only to those affected areas.
+
+## One authoritative upstream channel
+
+Use one authoritative mechanism to inspect the upstream standards repository during a synchronization.
+
+When an authenticated GitHub connector/integration is available, prefer it for:
+
+- resolving branches/commits;
+- comparing revisions;
+- fetching catalog/profile/skill files.
+
+Do not verify the same upstream state independently through web search, `git ls-remote`, and the GitHub connector unless the primary mechanism failed or produced ambiguous results.
 
 ## Efficient upstream access
 

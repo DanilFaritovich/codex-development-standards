@@ -309,6 +309,8 @@ Gateway smoke: passed
 
 Do not dump dependency download/build progress or full logs from every container after a successful startup.
 
+Suppress or capture successful dependency-install, package-download, and BuildKit progress when the project's tools allow it. On success, print only the compact validation summary. On failure, reveal the smallest captured diagnostic section that explains the failing step.
+
 When a service fails:
 
 1. identify the failing service;
