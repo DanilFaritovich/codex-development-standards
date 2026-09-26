@@ -11,6 +11,207 @@ Limits must protect the application without embedding arbitrary magic numbers th
 
 Use centralized, configurable defaults with per-endpoint overrides where the use case requires them.
 
+## Two-layer rate limiting model
+
+Do not treat all rate limiting as one concern.
+
+For full-stack HTTP applications, separate:
+
+1. **edge HTTP anti-flood protection** at the reverse proxy;
+2. **application/use-case quota** for expensive business operations.
+
+Preferred architecture:
+
+```text
+Client
+  |
+  v
+Nginx / reverse proxy
+  |  generic HTTP anti-flood for /api/
+  v
+FastAPI presentation layer
+  |  identify client + validate transport
+  v
+Application service / use case
+  |  quota_port.consume(client_id)
+  v
+Quota adapter
+  |
+  v
+Shared store such as Redis
+```
+
+These layers solve different problems and must not be collapsed into one process-local FastAPI limiter.
+
+### Edge HTTP anti-flood
+
+When Nginx is the public gateway, apply a general per-client-IP request limit to the public API prefix, normally `/api/`.
+
+Use Nginx request limiting such as `limit_req_zone` + `limit_req`.
+
+Requirements:
+
+- key by the trusted client IP;
+- apply to `/api/`, not internal-only services;
+- allow a small `burst` so short legitimate spikes are not rejected immediately;
+- return HTTP 429 when the edge limit is exceeded;
+- keep limits in clearly named configuration;
+- avoid duplicating the same numeric values across multiple config fragments.
+
+Conceptual example:
+
+```nginx
+limit_req_zone $binary_remote_addr zone=api_per_ip:10m rate=<configured-rate>;
+
+location /api/ {
+    limit_req zone=api_per_ip burst=<configured-burst> nodelay;
+    limit_req_status 429;
+    proxy_pass http://backend;
+}
+```
+
+Exact values are project policy.
+
+If environment-variable templating is already part of the deployment, limits may be templated from environment variables. Otherwise, prefer a clearly named Nginx config section over adding unnecessary templating complexity.
+
+If Nginx itself is behind another proxy/load balancer, configure trusted real-IP handling. Do not rate-limit on spoofable forwarding headers.
+
+### Application/use-case quotas
+
+A quota for an expensive operation such as LLM inference is not an HTTP concern.
+
+The HTTP layer should only:
+
+- determine the client identifier, currently often the trusted client IP;
+- validate the request;
+- pass `client_id` into the application use case;
+- map application exceptions to HTTP responses.
+
+The application service/use case owns the decision to consume quota before the expensive operation.
+
+Do not put an LLM/business quota in:
+
+- FastAPI middleware;
+- router-local state;
+- `app.state` as process-local counters;
+- domain entities;
+- a process-local in-memory limiter in production.
+
+The domain layer should remain unaware of transport quotas.
+
+### Quota port
+
+Represent the quota dependency through an application port.
+
+Example:
+
+```python
+from typing import Protocol
+
+class LLMQuotaPort(Protocol):
+    async def consume(self, client_id: str) -> None:
+        ...
+```
+
+The application service depends on this port and consumes quota before invoking the expensive connector.
+
+If several endpoints perform the same expensive capability and are intended to share one quota, they must use the same quota scope/key.
+
+For example, `/api/tickets/route` and `/api/tickets/process` should share one LLM quota when both consume the same LLM resource budget.
+
+Technical endpoints such as health/readiness/version endpoints must not consume LLM quota.
+
+### Application exception
+
+Quota exhaustion should be represented by a framework-independent application exception.
+
+Example:
+
+```python
+class LLMQuotaExceeded(Exception):
+    def __init__(self, retry_after: int) -> None:
+        self.retry_after = retry_after
+        super().__init__("LLM quota exceeded")
+```
+
+Application exceptions must not import or reference:
+
+- FastAPI `Request`;
+- `HTTPException`;
+- HTTP status codes;
+- response headers.
+
+The presentation layer maps the exception to transport behavior.
+
+### Shared quota store
+
+When quota must be consistent across workers or backend instances, use a shared store.
+
+Redis is the default adapter for distributed short-window quota state when the project already uses or explicitly enables it.
+
+Do not use a production `InMemory*RateLimiter` for cross-request quota that must be consistent across:
+
+- multiple Uvicorn/Gunicorn workers;
+- multiple containers;
+- multiple backend instances.
+
+In-memory adapters are acceptable only for unit tests or explicitly single-process local development.
+
+### Sliding/rolling windows
+
+For minute/day quotas that are meant to represent rolling usage, use a rolling/sliding-window algorithm.
+
+Do not implement rolling quota semantics with a naive fixed-window:
+
+`INCR + EXPIRE`
+
+when requests near a window boundary could exceed the intended rolling limit.
+
+A Redis implementation may use sorted sets or another suitable structure.
+
+The sequence:
+
+- remove expired entries;
+- count relevant entries;
+- determine whether the new request is allowed;
+- record the new request;
+- calculate retry time;
+
+must be atomic.
+
+Prefer a Redis Lua script (or another Redis-side atomic mechanism) for this operation.
+
+### Multiple quota windows
+
+A business quota may enforce several windows simultaneously, for example:
+
+- per minute;
+- per day.
+
+Keep values configurable, for example:
+
+```text
+LLM_RATE_LIMIT_PER_MINUTE
+LLM_RATE_LIMIT_PER_DAY
+REDIS_URL
+```
+
+The application should reject a request when any configured quota window is exhausted.
+
+`retry_after` should represent the relevant time until a request can succeed again.
+
+### Client identity boundary
+
+The transport layer determines the client identity.
+
+For anonymous HTTP traffic this may be the trusted client IP.
+
+For authenticated systems, a stable user/account/client identifier is usually preferable.
+
+Pass the resulting plain `client_id: str` into the application layer.
+
+Do not pass a FastAPI `Request` object into application services merely so they can inspect the IP address.
+
 ## Rate limiting
 
 Public and user-facing API endpoints should be covered by a rate-limit policy unless there is a documented reason to exempt an endpoint.
@@ -208,13 +409,29 @@ Do not scatter duplicated numeric limits across routers.
 
 ## FastAPI integration
 
-Keep enforcement at the presentation/infrastructure boundary.
+Keep generic transport guardrails at the presentation/infrastructure boundary.
 
 FastAPI dependencies or middleware may enforce:
 
-- rate limits;
 - request size limits;
-- authentication-derived identity.
+- authentication-derived identity;
+- transport-level validation/correlation concerns.
+
+Generic HTTP anti-flood should preferably be enforced by the public reverse proxy when that gateway exists.
+
+Expensive-operation/business quotas belong in application services through ports, not in FastAPI middleware or process-local application state.
+
+FastAPI should:
+
+- determine the trusted client identifier;
+- pass a plain `client_id` to the use case;
+- map application quota exceptions to HTTP.
+
+For an exception such as `LLMQuotaExceeded(retry_after=...)`, FastAPI should return:
+
+- HTTP 429 Too Many Requests;
+- `Retry-After: <seconds>`;
+- the project's normal error schema.
 
 Pydantic schemas enforce field-level constraints.
 
@@ -249,12 +466,20 @@ Add tests for guardrails that are part of the API contract.
 
 Examples:
 
-- request below limit succeeds;
-- request above field length fails;
+- request below an input limit succeeds;
+- request above a field length fails;
 - oversized payload returns the expected error;
-- rate limit returns 429;
-- endpoint-specific overrides work;
-- trusted identity selection works.
+- Nginx/API anti-flood returns 429;
+- a quota window allows requests below the threshold;
+- minute quota exhaustion is enforced;
+- daily quota exhaustion is enforced;
+- several endpoints that share one business quota consume the same quota;
+- different client IDs have independent quotas;
+- `Retry-After` is propagated correctly;
+- concurrent quota consumes cannot overshoot the configured limit;
+- technical endpoints do not consume an expensive-operation quota;
+- trusted identity selection works;
+- Nginx rate-limit configuration has a smoke/integration test when reasonable for the existing test setup.
 
 Do not make unit tests depend on real wall-clock delays when the limiter can use a testable clock/store abstraction.
 
