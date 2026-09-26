@@ -65,6 +65,11 @@ skills:
     tags: [ci, github, github-actions, pull-request]
     description: GitHub Actions CI conventions and local/remote validation split.
 
+  continuous-delivery:
+    path: .agents/skills/continuous-delivery/SKILL.md
+    tags: [cd, deployment, github-actions, ghcr, docker-compose, production, secrets]
+    description: Production delivery using immutable images, GitHub Environment configuration, server-side runtime env, migrations, health checks, and rollback.
+
   documentation:
     path: .agents/skills/documentation/SKILL.md
     tags: [documentation, readme, agents, architecture, english, russian]
@@ -86,6 +91,7 @@ profiles:
       - alembic
       - docker
       - github-actions
+      - continuous-delivery
       - clean-architecture
       - logging
       - api-guardrails
