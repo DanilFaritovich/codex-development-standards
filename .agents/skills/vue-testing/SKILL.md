@@ -124,7 +124,13 @@ Do not depend on production accounts or mutable external state.
 
 ## Compact execution
 
-Agent-driven local validation should use compact output.
+Agent-driven local validation should use the configured test runner's compact/silent reporter when it preserves useful failure diagnostics.
+
+Do not use verbose reporters by default.
+
+For a failure, rerun only the affected test/spec with additional detail when the compact output is insufficient.
+
+Avoid printing browser traces, screenshots, full console logs, or large snapshots unless they are needed to diagnose the current failure.
 
 During development, run:
 
