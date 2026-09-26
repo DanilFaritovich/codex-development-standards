@@ -146,6 +146,10 @@ Profiles должны ссылаться на существующие стан�
 
 Содержит инструкции для применения стандартов к существующему или новому репозиторию.
 
+Сейчас доступен:
+
+- [`bootstrap/existing-project.md`](./bootstrap/existing-project.md) — инициализация существующего репозитория через каталог и профиль.
+
 Bootstrap-процесс должен изучить целевой проект, определить его фактический стек и структуру, выбрать только релевантные стандарты и адаптировать их под проект.
 
 ## Использование
@@ -235,7 +239,7 @@ target-project/
     └── skills/
         ├── task-development-workflow/
         ├── python-testing/
-        ├── backend-layered-architecture/
+        ├── backend-clean-architecture/
         ├── fastapi/
         └── github-actions/
 ```
