@@ -291,9 +291,23 @@ Full build/start/health validation can run in GitHub Actions when it is expensiv
 
 Use compact Docker/Compose output during agent-driven checks.
 
-Prefer validation commands that return little or no output on success, for example configuration-check/quiet modes when supported.
+Prefer validation/build modes that suppress routine progress while preserving failures.
 
-Do not dump full logs from every container after a successful startup.
+For project Make targets, it is acceptable to capture verbose build/start output and:
+
+- print a short success summary when the command succeeds;
+- print the relevant captured tail/details only when it fails.
+
+A successful Docker validation should ideally report only meaningful results such as:
+
+```text
+Compose config: OK
+Redis: healthy
+Backend: healthy
+Gateway smoke: passed
+```
+
+Do not dump dependency download/build progress or full logs from every container after a successful startup.
 
 When a service fails:
 
@@ -302,6 +316,8 @@ When a service fails:
 3. increase log scope/verbosity only if needed.
 
 Avoid full `docker compose logs` output for the entire stack unless the failure genuinely spans multiple services.
+
+Do not rebuild the complete stack when only one changed service/image requires validation and the project can safely validate that service independently.
 
 ## CI relationship
 

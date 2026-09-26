@@ -268,6 +268,28 @@ CI should instead use check modes such as:
 
 If CI finds a formatting/lint issue, fix it in the task branch and push the corrected code.
 
+## Plan aggregate checks
+
+Before running local validation, understand what the project's public Make targets include.
+
+Do not execute full suites independently and then immediately execute an aggregate target that reruns the same suites.
+
+Use targeted tests/checks while editing, then let the aggregate target provide the single broad pass.
+
+Example:
+
+```text
+changed backend quota tests
+-> make fix
+-> targeted typecheck / targeted pytest
+-> make check
+-> make verify only if integration/E2E/infrastructure coverage is required
+```
+
+If `make verify` already includes `make check`, run only `make verify` at the final broad stage unless a prior fast check is useful for failure isolation.
+
+Project Makefiles/AGENTS.md should document target coverage clearly enough that Codex does not need to discover it by repeatedly running commands.
+
 ## Avoid redundant validation
 
 Bad local flow:

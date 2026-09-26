@@ -1,0 +1,29 @@
+version: 1
+
+source:
+  repository: https://github.com/DanilFaritovich/codex-development-standards
+  ref: "<upstream-commit-sha>"
+
+profile:
+  name: fastapi-vue-clean
+  version: 5
+
+skills:
+  - task-development-workflow
+  - standards-sync
+  - backend-clean-architecture
+  - python-testing
+  - code-quality
+  - fastapi
+  - api-guardrails
+  - structured-logging
+  - sqlalchemy-alembic
+  - vue
+  - vue-testing
+  - docker
+  - github-actions
+  - documentation
+  - licensing
+
+optional_skills:
+  - continuous-delivery
