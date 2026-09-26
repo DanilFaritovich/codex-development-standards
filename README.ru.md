@@ -18,6 +18,8 @@
 - **Testing** — как организуются, именуются, пишутся и проверяются тесты.
 - **Architecture** — как организованы слои приложения, границы, порты, адаптеры и сервисы.
 - **Stacks** — соглашения для конкретных технологий, таких как FastAPI, Vue, SQLAlchemy, Docker и Airflow.
+- **Observability** — правила структурированного JSON-логирования и централизованного сбора логов.
+- **API guardrails** — rate limits, ограничения размера запросов и входных данных.
 - **CI/CD** — соглашения для автоматизированной проверки и доставки.
 - **Profiles** — готовые комбинации стандартов для распространённых типов проектов.
 
@@ -97,6 +99,8 @@ task-development-workflow
 backend-clean-architecture
 python-testing
 fastapi
+api-guardrails
+structured-logging
 sqlalchemy-alembic
 vue
 vue-testing
@@ -131,6 +135,8 @@ skills:
   - backend-clean-architecture
   - python-testing
   - fastapi
+  - api-guardrails
+  - structured-logging
   - sqlalchemy-alembic
   - vue
   - vue-testing
