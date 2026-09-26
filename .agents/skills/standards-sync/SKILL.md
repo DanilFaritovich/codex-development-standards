@@ -101,14 +101,18 @@ Do not load a reference merely to prove that it was installed.
 If the normal patch/write mechanism cannot modify an installed skill directory because of sandbox, mount, or permission restrictions:
 
 1. do not change filesystem permissions, ownership, or mount configuration;
-2. do not refetch upstream content that was already obtained;
-3. do not delete an existing `SKILL.md` before its replacement is ready to be written;
-4. prepare the complete replacement before mutating the existing installed file;
-5. prefer one permitted atomic or single-step replacement mechanism when available;
-6. if a multi-step fallback is unavoidable, preserve a valid existing skill until the replacement can be written successfully;
-7. if no permitted write mechanism exists, stop the synchronization and report the blocked paths.
+2. do not use `sudo`, privilege escalation, or another privileged write path to bypass the failure;
+3. do not refetch upstream content that was already obtained;
+4. do not delete an existing `SKILL.md` before its replacement is ready to be written;
+5. prepare the complete replacement before mutating the existing installed file;
+6. prefer one non-privileged permitted atomic or single-step replacement mechanism when available;
+7. if a normal non-privileged write attempt fails with an OS-level `Permission denied` caused by ownership/permissions, stop instead of probing privileged alternatives;
+8. if a multi-step non-privileged fallback is unavoidable, preserve a valid existing skill until the replacement can be written successfully;
+9. if no permitted non-privileged write mechanism exists, stop the synchronization and report the exact blocked paths.
 
 Never use a delete-first replacement that can leave the project without a valid installed skill after a later write failure.
+
+Filesystem ownership/permission repair is a developer/environment responsibility, not part of standards synchronization. Report the blocked path and leave permission repair to the developer.
 
 ## Update workflow
 
