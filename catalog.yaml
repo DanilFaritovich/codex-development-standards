@@ -25,6 +25,11 @@ skills:
     tags: [python, testing, pytest, unit, integration, e2e]
     description: Python testing structure, naming, fixtures, and execution conventions.
 
+  code-quality:
+    path: .agents/skills/code-quality/SKILL.md
+    tags: [quality, formatting, lint, types, autofix, makefile, python, frontend]
+    description: Run safe backend/frontend auto-fixes before read-only lint, format, type, and test validation.
+
   fastapi:
     path: .agents/skills/fastapi/SKILL.md
     tags: [python, backend, fastapi, http, pydantic, dependency-injection]
