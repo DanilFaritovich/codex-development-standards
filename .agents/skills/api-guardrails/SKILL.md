@@ -181,7 +181,49 @@ must be atomic.
 
 Prefer a Redis Lua script (or another Redis-side atomic mechanism) for this operation.
 
-### Multiple quota windows
+### Refactoring existing limiters
+
+When replacing an existing rate limiter or quota implementation, preserve the current externally observable policy unless the task explicitly changes it.
+
+For example, if the existing project defines:
+
+```text
+LLM_RATE_LIMIT_PER_MINUTE=10
+LLM_RATE_LIMIT_PER_DAY=20
+```
+
+a refactor from an in-memory limiter to Redis must preserve those values and shared quota semantics.
+
+The refactor may change:
+
+- storage;
+- algorithm implementation;
+- layer ownership;
+- atomicity;
+- deployment topology.
+
+It must not silently change:
+
+- configured quota numbers;
+- which operations consume the quota;
+- whether endpoints share a quota;
+- client identity semantics;
+- error/retry behavior;
+
+unless explicitly required.
+
+When a process-local production limiter exists and distributed consistency is required, replace/remove it rather than layering the Redis quota on top of it.
+
+Remove obsolete:
+
+- in-memory counters;
+- limiter initialization;
+- `app.state` quota state;
+- duplicated HTTP-layer quota checks;
+
+after the new application-port/adapter path is wired and covered by tests.
+
+## Multiple quota windows
 
 A business quota may enforce several windows simultaneously, for example:
 
