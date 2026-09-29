@@ -21,6 +21,7 @@ The standards are organized by responsibility:
 - **Observability** — structured JSON logging and centralized log collection conventions.
 - **API guardrails** — rate limits, bounded request bodies, and input constraints.
 - **CI/CD** — automated validation and delivery conventions.
+- **Infrastructure as Code** — safe, idempotent Ansible host provisioning and validation.
 - **Profiles** — predefined combinations of standards for common project types.
 
 Only the standards relevant to a project should be installed.
@@ -112,6 +113,7 @@ sqlalchemy-alembic
 vue
 vue-testing
 docker
+ansible
 github-actions
 continuous-delivery
 documentation
@@ -160,6 +162,8 @@ Profiles should reference existing standards rather than duplicate their content
 
 Optional standards may be listed separately when they should only be applied for projects that actually need them. For example, `continuous-delivery` is optional for `fastapi-vue-clean` and should be enabled when the project is deployed to a production environment.
 
+For Linux VPS provisioning, use [`ansible-infrastructure`](./profiles/ansible-infrastructure.yaml). It combines the [Ansible skill](./.agents/skills/ansible/SKILL.md) with task workflow, quality, GitHub Actions, documentation, and licensing standards. Add the optional `docker` skill when Docker-host setup is in scope, and `continuous-delivery` only when release deployment is in scope. Token-efficiency rules stay in the existing workflow/quality standards; Ansible-specific recap and validation guidance is in the Ansible skill.
+
 ### `bootstrap/`
 
 Contains initialization instructions for applying the standards to an existing or new repository.
@@ -191,6 +195,10 @@ Adapt the standards to the actual repository structure, architecture, tools, and
 
 Do not modify application business logic during initialization unless required for the development infrastructure.
 ```
+
+### Ansible infrastructure project
+
+For an Ansible-based Linux server repository, select the `ansible-infrastructure` profile after reading `catalog.yaml`. Install only its applicable skills and keep `.codex-standards.lock.yaml` pinned to the exact upstream revision. Static CI must not contact production; applying playbooks, even in `--check` mode, requires separate authorization for a live host.
 
 ### Option 2 — Describe the stack
 
