@@ -75,6 +75,11 @@ skills:
     tags: [docker, compose, deployment, networking, health, nginx, redis]
     description: Docker packaging, networking, health, and one-command startup conventions.
 
+  ansible:
+    path: .agents/skills/ansible/SKILL.md
+    tags: [ansible, infrastructure-as-code, linux, provisioning, ssh, firewall, token-efficiency]
+    description: Idempotent and safe Linux provisioning, host access, validation, and compact Ansible output.
+
   github-actions:
     path: .agents/skills/github-actions/SKILL.md
     tags: [ci, github, github-actions, pull-request]
@@ -113,3 +118,10 @@ profiles:
     description: >
       Full-stack FastAPI + Vue profile with clean backend architecture,
       testing, persistence, API guardrails, structured logging, Docker, CI, documentation, and licensing.
+
+  ansible-infrastructure:
+    path: profiles/ansible-infrastructure.yaml
+    tags: [ansible, infrastructure-as-code, linux, provisioning, github-actions]
+    description: >
+      Linux host provisioning with Ansible, safe access management, offline CI,
+      and optional Docker/CD integration.

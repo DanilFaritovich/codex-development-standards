@@ -1,0 +1,46 @@
+name: ansible-infrastructure
+version: 1
+
+description: >
+  Infrastructure as Code profile for safe, idempotent Ansible-based Linux
+  host provisioning, GitHub Actions validation, and reusable project standards.
+
+skills:
+  - task-development-workflow
+  - standards-sync
+  - code-quality
+  - ansible
+  - github-actions
+  - documentation
+  - licensing
+
+optional_skills:
+  - docker
+  - continuous-delivery
+
+defaults:
+  standards_sync:
+    lock_file: .codex-standards.lock.yaml
+    incremental: true
+  development_branch: develop
+  stable_branch: main
+  infrastructure:
+    tool: ansible
+    target: linux-host
+    idempotent: true
+    live_host_execution_requires_explicit_approval: true
+    ci_must_not_contact_production: true
+  ci:
+    provider: github-actions
+    local_full_ci: false
+  documentation:
+    languages:
+      - en
+      - ru
+
+adaptation:
+  preserve_existing_architecture_when_compatible: true
+  do_not_add_unused_technologies: true
+  do_not_overwrite_existing_license: true
+  require_project_specific_agents_md: true
+  require_architecture_md_when_architecture_is_nontrivial: true
