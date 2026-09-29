@@ -72,8 +72,8 @@ skills:
 
   docker:
     path: .agents/skills/docker/SKILL.md
-    tags: [docker, compose, deployment, networking, health, nginx, redis]
-    description: Docker packaging, networking, health, and one-command startup conventions.
+    tags: [docker, compose, deployment, networking, health, nginx, redis, build-cache, least-privilege, security]
+    description: Docker packaging, cache-friendly dependency layers, least-privilege runtime, networking, health, and startup conventions.
 
   ansible:
     path: .agents/skills/ansible/SKILL.md
