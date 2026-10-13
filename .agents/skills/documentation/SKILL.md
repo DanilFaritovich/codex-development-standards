@@ -1,21 +1,23 @@
 ---
 name: documentation
-description: Documentation conventions for explicitly requested README, AGENTS.md, ARCHITECTURE.md, API docs and bilingual project guides. No unsolicited documentation updates.
+description: Documentation conventions with opt-in README and docs updates, plus a narrow automatic update to an existing ARCHITECTURE.md for material architecture changes.
 ---
 
 # Documentation Standard
 
 Documentation should describe the final, working state of the project.
 
-**Default: do not create, edit, regenerate, or automatically synchronize documentation unless the user explicitly requests it.** This includes README files, `docs/`, `AGENTS.md`, `ARCHITECTURE.md`, API docs, changelogs, documentation examples, and documentation-only docstring rewrites. Feature/fix work, successful tests, and a planned commit do not implicitly authorize documentation edits.
+**Default: do not create, edit, regenerate, or synchronize documentation unless explicitly requested.** This includes README files, `docs/`, `AGENTS.md`, API docs, changelogs, examples and documentation-only docstring rewrites. Feature/fix work, successful tests and planned commits do not implicitly authorize such edits.
 
-An explicit request to write/update documentation or install/update project-local standards/instructions authorizes only the relevant documentation scope. Keep necessary code comments accurate during code changes, but do not use this to justify broader documentation work.
+**Narrow exception:** when the actual implementation materially changes the system architecture, update the relevant sections of an **existing `ARCHITECTURE.md`** automatically so future Codex work follows the true structure. This does not authorize creating that file if absent or modifying any other documentation.
+
+An explicit request to write/update documentation or install/update project-local standards/instructions authorizes only the relevant documentation scope. Keep necessary code comments accurate during code changes without broad unsolicited documentation rewrites.
 
 Do not continuously rewrite documentation while implementation is still changing.
 
 ## Documentation timing
 
-For an **explicitly requested** documentation task, update documentation after:
+For an **explicitly requested** documentation task, or an existing `ARCHITECTURE.md` update triggered by a material architecture change, update documentation after:
 
 1. implementation is complete (if any);
 2. required tests are added or updated;
@@ -24,7 +26,7 @@ For an **explicitly requested** documentation task, update documentation after:
 5. extended verification is complete when required;
 6. the final implementation is stable.
 
-Then synchronize only the requested documentation before local commit. Push/PR require separate explicit approval.
+Before local commit, synchronize only the requested documentation or the minimal warranted `ARCHITECTURE.md` changes. Push/PR require separate explicit approval.
 
 ## Supported README languages
 
@@ -141,7 +143,14 @@ Use `ARCHITECTURE.md` for deeper architecture documentation:
 - architectural decisions;
 - important invariants and constraints.
 
-Update it only when architecture documentation is explicitly requested, not automatically after architecture changes.
+Update an **existing** `ARCHITECTURE.md` automatically when implementation materially changes one or more of:
+
+- module/component responsibilities or architectural boundaries;
+- dependency direction, interfaces or integration contracts;
+- major data/control flows or persistence architecture;
+- infrastructure/deployment topology or key architectural invariants.
+
+Keep changes small and grounded in the final implementation. Do not update it for ordinary bug fixes, minor refactoring, formatting, or renames that do not change the architecture. If the file is absent, do not generate it without an explicit request. This exception never authorizes README, `docs/`, or `AGENTS.md` edits.
 
 ## Code documentation
 

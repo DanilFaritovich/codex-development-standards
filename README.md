@@ -38,9 +38,9 @@ Only the standards relevant to a project should be installed.
 - Do not reread unchanged or successfully edited files without a concrete reason.
 - Run one broader project check after the implementation stabilizes.
 - Use GitHub Actions for independent CI after a user-requested Pull Request.
-- Create a task branch on `develop`/`main`; otherwise continue the active task branch.
+- New task branches start only from `develop`. On `main`, first resolve or create `develop`; otherwise continue the active task branch.
 - Default delivery is a local commit; push and PR only when explicitly requested.
-- Change documentation only when requested by the user.
+- Change documentation only when requested, except a minimal update to an existing `ARCHITECTURE.md` for material architectural changes.
 - Leave the final merge decision with the developer.
 
 ## Repository structure
@@ -302,13 +302,13 @@ task
 ↓
 AGENTS.md / relevant files
 ↓
-new branch if develop/main; otherwise continue current task branch
+if main, resolve/create develop; new task branches ONLY from develop; otherwise continue task branch
 ↓
 implementation / tests
 ↓
 targeted validation / project check
 ↓
-documentation ONLY if explicitly requested
+requested documentation OR warranted existing ARCHITECTURE.md updates
 ↓
 final diff
 ↓

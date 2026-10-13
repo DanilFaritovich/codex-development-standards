@@ -4,15 +4,16 @@ Read this reference when starting/continuing a task branch, committing, or (only
 
 ## Branch setup
 
-Use the repository's configured development branch, normally `develop`.
+New task branches must start **only from `develop`**, never directly from `main`.
 
 Before editing:
 
-1. Check the current branch and working tree, including staged, unstaged, and untracked files.
-2. On `develop` or `main`, create and switch to a descriptive task branch before editing. Prefer the configured development base (normally `develop`).
-3. On an existing non-base development/task branch, **continue there**; do not create another branch or switch to the base just because a new task started.
-4. Preserve unrelated changes. If checkout would overwrite work, stop and ask; never force-switch, stash, reset, rebase, or discard without authorization.
-5. On detached HEAD or ambiguous/unrelated branch, ask before modifying files.
+1. Check current branch, working tree (including staged, unstaged and untracked changes), and local/remote `develop` availability.
+2. On an existing non-base task branch, **continue there**; do not create another branch or rebase it automatically.
+3. On `develop`, create a descriptive task branch from its current tip.
+4. On `main`, first resolve `develop`: switch to the existing local branch, or create a local tracking branch from `origin/develop` if only the remote branch exists. If neither exists, create **local `develop` from `main`**, then create the task branch **from `develop`**. Never branch directly from `main` and never push the new `develop` without an explicit request.
+5. Preserve unrelated changes; if checkout would overwrite work, stop and ask. Do not force-switch, stash, reset, rebase, or discard without authorization; do not silently update an existing branch.
+6. On detached HEAD, ambiguous/unrelated branch, or uncertain base identity, ask before modifying files.
 
 Typical prefixes:
 
@@ -26,7 +27,7 @@ Do not perform normal task development directly in `develop` or `main`.
 
 ## Documentation timing
 
-Update documentation **only if explicitly requested**, after implementation and validation are stable. Never treat automatic documentation synchronization as routine feature/fix cleanup.
+Update routine documentation **only if explicitly requested**, after implementation and validation are stable. Do not make README or other documentation changes during routine feature/fix cleanup. Exception: make a **minimal update to existing `ARCHITECTURE.md`** when the implemented work materially changes architecture, responsibilities, boundaries, dependencies, major data flows or deployment topology. Avoid unrelated rewrites and do not create the architecture file unless requested.
 
 Potential files include:
 

@@ -49,7 +49,7 @@ Use the standards repository as an installation source. After installation, the 
 
 10. Create or adapt project-local development guidance:
    - `AGENTS.md` for explicitly requested standards installation;
-   - `ARCHITECTURE.md` only when explicitly requested;
+   - `ARCHITECTURE.md` only when explicitly requested during bootstrap; subsequent tasks may automatically maintain an existing file after material architecture changes;
    - relevant local skills under `.agents/skills/` when the project uses them;
    - Makefiles or equivalent stable validation commands;
    - GitHub Actions CI when GitHub is the CI provider.
@@ -115,13 +115,13 @@ Normal future tasks should follow:
 ```text
 task
  -> AGENTS.md / relevant files
- -> branch (new on develop/main, otherwise continue current task branch)
+ -> on main: resolve/create develop first; on develop: branch from develop; otherwise continue task branch
  -> implementation
  -> make fix
  -> targeted validation
  -> make check
  -> optional make verify
- -> documentation ONLY when explicitly requested
+ -> requested docs, or minimal existing ARCHITECTURE.md update for material architecture changes
  -> final diff
  -> local commit
  -> STOP (push/PR only when explicitly requested)

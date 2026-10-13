@@ -1,6 +1,6 @@
 ---
 name: task-development-workflow
-description: Core workflow from scoped implementation and validation to local commit; push/PR and documentation changes only on explicit user request.
+description: Core development workflow with task branches created strictly from develop, local-only commits, opt-in documentation, and automatic ARCHITECTURE.md maintenance for material architecture changes.
 ---
 
 # Task Development Workflow
@@ -24,14 +24,14 @@ Use this core workflow for normal feature, fix, refactor, chore, and documentati
 
 ```text
 inspect branch/worktree
--> create task branch on develop/main OR continue the current task branch
+-> resolve develop (create from main if missing) -> task branch FROM develop, or continue current task branch
 -> determine scope and read relevant context
 -> implement complete change
 -> make fix / component fix
 -> targeted validation
 -> make check once
 -> optional make verify
--> documentation ONLY if explicitly requested
+-> requested documentation; update existing ARCHITECTURE.md if architecture materially changes
 -> final review
 -> local commit
 -> STOP (push/PR/merge only on explicit request)
@@ -61,17 +61,18 @@ A later explicit request may resume from the verified working tree without resta
 
 ## Start safely
 
-Use the repository's configured development branch, normally `develop`, as the base for new tasks.
+The **only base for new task branches is `develop`**. Never create a task branch directly from `main`, even when `main` is checked out. Do not treat `main` as a fallback development base.
 
 Before editing:
 
-1. Check the current branch and staged, unstaged, and untracked changes.
-2. On `develop` or `main`, create/switch to a descriptive task branch (e.g. `feature/<topic>`, `fix/<topic>`, `chore/<topic>`, `docs/<topic>`) before editing. Prefer the configured development base.
-3. On an existing non-base task/development branch, **continue on that branch**; do not create another branch or switch back to `develop` unless explicitly requested.
-4. Preserve unrelated changes. If switching would overwrite work, stop and ask rather than forcibly checking out, stashing, resetting, rebasing, or discarding it.
-5. If detached HEAD or the branch's purpose is ambiguous, ask before changing files.
+1. Check the current branch, local/remote `develop` availability, and staged, unstaged, and untracked changes.
+2. If already on a non-base task/development branch, **continue there**; do not automatically create another branch or rebase/switch it.
+3. If on `develop`, create a descriptive task branch from the current `develop` tip before editing.
+4. If on `main`: use an existing local `develop` (or materialize a local tracking `develop` from `origin/develop`, when only the remote exists); then create the task branch **from `develop`**. If no local or remote `develop` exists, create **local `develop` from `main` first**, then create the task branch from that new `develop`. Never push the newly created `develop` implicitly.
+5. Preserve all unrelated changes; if switching branches would overwrite work, stop and ask rather than forcing checkout, stashing, resetting, rebasing, or discarding it. Do not silently update or rewrite existing branches.
+6. On detached HEAD, ambiguous/unrelated branches, or unresolved base state, ask before modifying files.
 
-Never perform normal task development directly on `develop` or `main`.
+Never perform normal task development directly on `develop` or `main`; task commits remain local unless remote delivery was explicitly requested.
 
 ## Load only relevant context
 
@@ -100,7 +101,7 @@ Before editing, identify:
 - affected components/files;
 - existing tests;
 - relevant project conventions;
-- whether documentation changes were explicitly requested.
+- whether documentation was explicitly requested, or existing `ARCHITECTURE.md` must be updated because the task materially changes the architecture.
 
 Avoid unrelated refactoring.
 
@@ -127,9 +128,9 @@ Do not repeat a successful check unless later changes could affect it.
 
 ## Documentation
 
-Do **not** create, update, or refresh documentation as routine housekeeping. Documentation file changes require an explicit request (including a specific request to synchronize agent standards/instructions).
+Do **not** create, update, or refresh routine documentation without an explicit request (including a request to synchronize agent standards/instructions). **Exception:** if implementation materially changes architecture—module/component responsibilities, boundaries/dependencies, major data or control flows, persistence/integration contracts, or deployment topology—make a minimal accurate update to an **existing** `ARCHITECTURE.md` after implementation stabilizes, even without a separate documentation request. Small refactors, file moves without changed responsibilities, and implementation details alone do not trigger this exception. Do not auto-create `ARCHITECTURE.md`, rewrite unrelated sections, or use the exception to change README/`docs/`/`AGENTS.md`.
 
-When requested, update documentation after implementation and necessary validation stabilize. Use the documentation skill for details.
+Use the documentation skill for details.
 
 ## Final review
 
@@ -161,7 +162,7 @@ For a normal task with local-only delivery, completion means:
 - the normal project check passes;
 - extended verification was used when justified;
 - final review is complete;
-- documentation was changed only when explicitly requested;
+- documentation was changed only when explicitly requested, except minimal updates to existing `ARCHITECTURE.md` for material architecture changes;
 - task changes are locally committed;
 - push/PR/merge were not performed without explicit user authorization.
 
