@@ -14,7 +14,7 @@
 
 Стандарты разделены по ответственности:
 
-- **Workflow** — как выполняется задача разработки от анализа до Pull Request.
+- **Workflow** — как задача проходит от выбора рабочей ветки до локального коммита; публикация только по запросу.
 - **Testing** — как организуются, именуются, пишутся и проверяются тесты.
 - **Architecture** — как организованы слои приложения, границы, порты, адаптеры и сервисы.
 - **Stacks** — соглашения для конкретных технологий, таких как FastAPI, Vue, SQLAlchemy, Docker и Airflow.
@@ -298,23 +298,23 @@ target-project/
 Обычная задача должна проходить по одному и тому же высокоуровневому workflow:
 
 ```text
-task
+задача
 ↓
-AGENTS.md / relevant files
+AGENTS.md / необходимые файлы
 ↓
-new branch if develop/main; otherwise continue current task branch
+новая ветка на develop/main или продолжение текущей рабочей ветки
 ↓
-implementation / tests
+реализация / тесты
 ↓
-targeted validation / project check
+точечные проверки / проверка проекта
 ↓
-documentation ONLY if explicitly requested
+документация ТОЛЬКО по явному запросу
 ↓
-final diff
+финальный diff
 ↓
-local commit
+локальный коммит
 ↓
-STOP — developer handles push / PR unless explicitly requested
+СТОП — push / PR только по отдельному запросу
 ```
 
 Агент не должен использовать полный CI pipeline как обычный цикл отладки. Запрос на создание PR также разрешает необходимый для него push рабочей ветки.

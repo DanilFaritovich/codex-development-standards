@@ -14,7 +14,7 @@ The goal is to keep agent-driven development predictable, efficient, and easy to
 
 The standards are organized by responsibility:
 
-- **Workflow** — how a development task is executed from analysis to Pull Request.
+- **Workflow** — how a task moves from branch selection to a local commit, with optional user-requested publication.
 - **Testing** — how tests are structured, named, written, and validated.
 - **Architecture** — how application layers, boundaries, ports, adapters, and services are organized.
 - **Stacks** — conventions specific to technologies such as FastAPI, Vue, SQLAlchemy, Docker, and Airflow.
