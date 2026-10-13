@@ -1,30 +1,34 @@
 ---
 name: documentation
-description: Project documentation conventions for English and Russian README files, component documentation, AGENTS.md, ARCHITECTURE.md, code comments, and updating docs only after implementation stabilizes.
+description: Documentation conventions for explicitly requested README, AGENTS.md, ARCHITECTURE.md, API docs and bilingual project guides. No unsolicited documentation updates.
 ---
 
 # Documentation Standard
 
 Documentation should describe the final, working state of the project.
 
+**Default: do not create, edit, regenerate, or automatically synchronize documentation unless the user explicitly requests it.** This includes README files, `docs/`, `AGENTS.md`, `ARCHITECTURE.md`, API docs, changelogs, documentation examples, and documentation-only docstring rewrites. Feature/fix work, successful tests, and a planned commit do not implicitly authorize documentation edits.
+
+An explicit request to write/update documentation or install/update project-local standards/instructions authorizes only the relevant documentation scope. Keep necessary code comments accurate during code changes, but do not use this to justify broader documentation work.
+
 Do not continuously rewrite documentation while implementation is still changing.
 
 ## Documentation timing
 
-Update documentation after:
+For an **explicitly requested** documentation task, update documentation after:
 
-1. implementation is complete;
+1. implementation is complete (if any);
 2. required tests are added or updated;
 3. targeted checks pass;
 4. the standard project check passes;
 5. extended verification is complete when required;
 6. the final implementation is stable.
 
-Then synchronize the affected documentation before commit/push/PR.
+Then synchronize only the requested documentation before local commit. Push/PR require separate explicit approval.
 
 ## Supported README languages
 
-During project initialization, determine the desired README language mode:
+When README creation is explicitly requested during project initialization, determine the desired language mode:
 
 - English only;
 - Russian only;
@@ -119,7 +123,7 @@ It should contain:
 - project-specific rules;
 - references to deeper documentation/skills.
 
-Update it when project structure, important commands, or development rules change.
+Update it only when the user explicitly requests changes to project instructions (including requested standards installation or synchronization).
 
 Do not force the agent to read every documentation file before every task.
 
@@ -137,7 +141,7 @@ Use `ARCHITECTURE.md` for deeper architecture documentation:
 - architectural decisions;
 - important invariants and constraints.
 
-Update it when architecture changes, not after every implementation detail.
+Update it only when architecture documentation is explicitly requested, not automatically after architecture changes.
 
 ## Code documentation
 
@@ -181,7 +185,7 @@ Commands shown in README should be real commands from the repository.
 
 ## Documentation review
 
-Before a Pull Request:
+For explicitly requested documentation, before the local commit or an authorized Pull Request:
 
 - verify links;
 - verify commands;

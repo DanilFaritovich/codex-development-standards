@@ -37,9 +37,11 @@
 - Не перезапускать весь pipeline проверки после каждого небольшого исправления.
 - Не перечитывать неизменённые или успешно отредактированные файлы без конкретной причины.
 - Выполнять одну более широкую проверку проекта после стабилизации реализации.
-- Использовать GitHub Actions как финальную независимую CI-проверку.
-- Разрабатывать изменения в отдельных task-ветках.
-- Оставлять финальное решение о merge за разработчиком.
+- Использовать GitHub Actions для независимой CI-проверки после запрошенного пользователем PR.
+- На `develop`/`main` создавать task-ветку; иначе продолжать работу в текущей ветке разработки.
+- По умолчанию завершать локальным коммитом; push и PR — только по явному запросу.
+- Обновлять документацию только по просьбе пользователя.
+- Оставлять решение о merge за разработчиком.
 
 ## Структура репозитория
 
@@ -298,34 +300,24 @@ target-project/
 ```text
 task
 ↓
-AGENTS.md
+AGENTS.md / relevant files
 ↓
-relevant source files
+new branch if develop/main; otherwise continue current task branch
 ↓
-implementation
+implementation / tests
 ↓
-tests
+targeted validation / project check
 ↓
-targeted validation
-↓
-project check
+documentation ONLY if explicitly requested
 ↓
 final diff
 ↓
-documentation if required
+local commit
 ↓
-commit
-↓
-push task branch
-↓
-Pull Request
-↓
-GitHub CI
-↓
-developer review and merge
+STOP — developer handles push / PR unless explicitly requested
 ```
 
-Агент не должен использовать полный CI pipeline как обычный цикл отладки.
+Агент не должен использовать полный CI pipeline как обычный цикл отладки. Запрос на создание PR также разрешает необходимый для него push рабочей ветки.
 
 ## Версионирование
 

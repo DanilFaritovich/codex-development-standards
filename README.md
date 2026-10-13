@@ -37,9 +37,11 @@ Only the standards relevant to a project should be installed.
 - Do not rerun the full validation pipeline after every small fix.
 - Do not reread unchanged or successfully edited files without a concrete reason.
 - Run one broader project check after the implementation stabilizes.
-- Use GitHub Actions as the final independent CI validation.
-- Develop in task branches.
-- Keep the final merge decision with the developer.
+- Use GitHub Actions for independent CI after a user-requested Pull Request.
+- Create a task branch on `develop`/`main`; otherwise continue the active task branch.
+- Default delivery is a local commit; push and PR only when explicitly requested.
+- Change documentation only when requested by the user.
+- Leave the final merge decision with the developer.
 
 ## Repository structure
 
@@ -298,34 +300,24 @@ A normal task should follow the same high-level workflow:
 ```text
 task
 ↓
-AGENTS.md
+AGENTS.md / relevant files
 ↓
-relevant source files
+new branch if develop/main; otherwise continue current task branch
 ↓
-implementation
+implementation / tests
 ↓
-tests
+targeted validation / project check
 ↓
-targeted validation
-↓
-project check
+documentation ONLY if explicitly requested
 ↓
 final diff
 ↓
-documentation if required
+local commit
 ↓
-commit
-↓
-push task branch
-↓
-Pull Request
-↓
-GitHub CI
-↓
-developer review and merge
+STOP — developer handles push / PR unless explicitly requested
 ```
 
-The agent should not use the full CI pipeline as its normal debugging loop.
+The agent should not use the full CI pipeline as its normal debugging loop. A request to create a PR also authorizes the task-branch push required for it.
 
 ## Versioning
 

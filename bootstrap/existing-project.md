@@ -25,7 +25,7 @@ Use the standards repository as an installation source. After installation, the 
    - Docker/Compose;
    - CI/CD;
    - existing Makefiles/package scripts;
-   - documentation;
+   - existing documentation for context (do not edit without an explicit request);
    - current license;
    - branch strategy.
 
@@ -48,8 +48,8 @@ Use the standards repository as an installation source. After installation, the 
 9. Do not introduce unused technologies merely because a profile supports them.
 
 10. Create or adapt project-local development guidance:
-   - `AGENTS.md`;
-   - `ARCHITECTURE.md` when architecture is non-trivial;
+   - `AGENTS.md` for explicitly requested standards installation;
+   - `ARCHITECTURE.md` only when explicitly requested;
    - relevant local skills under `.agents/skills/` when the project uses them;
    - Makefiles or equivalent stable validation commands;
    - GitHub Actions CI when GitHub is the CI provider.
@@ -66,7 +66,7 @@ Use the standards repository as an installation source. After installation, the 
 
 14. Do not repeatedly run full local CI. Leave complete CI verification to GitHub Actions unless there is a concrete reason to run it locally.
 
-15. Review the final diff once before commit/push.
+15. Review the final diff once before the local commit. Push and PR require separate explicit requests.
 
 ## Recommended standard profile
 
@@ -114,23 +114,20 @@ Normal future tasks should follow:
 
 ```text
 task
- -> AGENTS.md
- -> relevant files
+ -> AGENTS.md / relevant files
+ -> branch (new on develop/main, otherwise continue current task branch)
  -> implementation
  -> make fix
  -> targeted validation
  -> make check
  -> optional make verify
+ -> documentation ONLY when explicitly requested
  -> final diff
- -> documentation when required
- -> commit
- -> push task branch
- -> Pull Request
- -> GitHub CI
- -> developer review/merge
+ -> local commit
+ -> STOP (push/PR only when explicitly requested)
 ```
 
-Codex must not automatically merge the Pull Request unless the user explicitly requests that separate action.
+Codex must not automatically push or open a Pull Request; these require explicit user requests. Merge requires separate explicit authorization.
 
 
 ## Future standards updates

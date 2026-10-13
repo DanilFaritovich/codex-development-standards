@@ -1,6 +1,6 @@
 # Git, Documentation, and Delivery Reference
 
-Read this reference when starting/continuing a task branch, preparing documentation, committing, pushing, or creating a Pull Request.
+Read this reference when starting/continuing a task branch, committing, or (only when explicitly requested) changing documentation, pushing, or creating a Pull Request.
 
 ## Branch setup
 
@@ -8,10 +8,11 @@ Use the repository's configured development branch, normally `develop`.
 
 Before editing:
 
-1. check current branch;
-2. check working tree;
-3. preserve unrelated user changes and untracked files;
-4. create or continue a dedicated task branch.
+1. Check the current branch and working tree, including staged, unstaged, and untracked files.
+2. On `develop` or `main`, create and switch to a descriptive task branch before editing. Prefer the configured development base (normally `develop`).
+3. On an existing non-base development/task branch, **continue there**; do not create another branch or switch to the base just because a new task started.
+4. Preserve unrelated changes. If checkout would overwrite work, stop and ask; never force-switch, stash, reset, rebase, or discard without authorization.
+5. On detached HEAD or ambiguous/unrelated branch, ask before modifying files.
 
 Typical prefixes:
 
@@ -25,7 +26,7 @@ Do not perform normal task development directly in `develop` or `main`.
 
 ## Documentation timing
 
-Update affected documentation only after implementation and required validation are stable.
+Update documentation **only if explicitly requested**, after implementation and validation are stable. Never treat automatic documentation synchronization as routine feature/fix cleanup.
 
 Potential files include:
 
@@ -77,11 +78,13 @@ Never include:
 - unrelated untracked files;
 - accidental generated artifacts.
 
-Create the planned logical commits, then push only the task branch.
+Create the planned logical commits **locally and stop**. Do not push any branch, open/update a PR, or merge by default.
+
+Only explicit user authorization permits remote publication. A direct request to create a PR also authorizes the necessary task-branch push, but not merging.
 
 ## Push authentication failures
 
-If `git push` fails because authentication or credentials are unavailable:
+During explicitly authorized remote delivery only, if `git push` fails because authentication or credentials are unavailable:
 
 - do not retry the same push repeatedly;
 - do not automatically switch the remote between HTTPS and SSH;
@@ -95,13 +98,13 @@ After credentials are fixed by the developer or environment, retry the push once
 
 ## Pull Request and CI
 
-Normal flow:
+Default flow:
 
 ```text
-task branch -> develop
+task branch -> local commit -> STOP
 ```
 
-GitHub Actions performs the full independent CI validation.
+When explicitly requested, push/open a PR against the configured development branch (normally `develop`); GitHub Actions then performs independent CI. Do not create or update a PR just because local checks passed.
 
 If CI fails:
 
@@ -143,11 +146,14 @@ Codex must not automatically merge the Pull Request.
 Responsibility:
 
 ```text
-Codex:
-analyze -> implement -> validate -> document -> commit -> push -> PR -> CI
+Codex by default:
+analyze -> implement -> validate -> local commit -> STOP
+
+Codex only on explicit request:
+push / Pull Request / CI inspection
 
 Developer:
-review -> merge
+review -> merge (unless separately authorized)
 ```
 
 Merge only when the user explicitly requests that separate action.
@@ -161,9 +167,9 @@ Include:
 - what changed;
 - tests/checks performed;
 - whether extended verification was needed;
-- documentation changes;
-- branch/commit;
-- push/PR/CI status;
+- requested documentation changes (or confirmation none);
+- branch/local commit;
+- push/PR/CI status, including steps intentionally left to the developer;
 - remaining limitations.
 
 Do not include long successful logs or a chronological list of tool calls.
