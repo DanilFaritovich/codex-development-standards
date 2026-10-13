@@ -93,7 +93,7 @@ skills:
   documentation:
     path: .agents/skills/documentation/SKILL.md
     tags: [documentation, readme, agents, architecture, english, russian]
-    description: Documentation timing, README language modes, AGENTS.md, and ARCHITECTURE.md rules.
+    description: Opt-in documentation, bilingual portfolio README badges/presentation, and architecture map maintenance.
 
   licensing:
     path: .agents/skills/licensing/SKILL.md
