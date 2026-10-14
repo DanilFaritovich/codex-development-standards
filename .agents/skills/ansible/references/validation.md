@@ -19,7 +19,7 @@ make ci       # non-mutating GitHub Actions validation
 - Never use `ansible-lint --fix` or broad rewrites blindly. If a safe fix mode exists, apply it only to intended files, inspect its diff, then run read-only validation.
 - Avoid a fake `make fix` target that silently reports successful formatting while doing nothing. Document when no safe automatic fixer is configured.
 - Validate YAML syntax, playbook syntax, lint, dependency declaration, relevant templating/role behavior, and operator wrappers when those wrappers are part of the public workflow.
-- Use a disposable VM/container for optional integration testing where reasonable; do not present such tests as production verification.
+- Use an isolated, operator-owned disposable VM for host-level E2E when the system modifies SSH, UFW, users, sudo, swap, or reboot behavior. Follow [vm-e2e.md](./vm-e2e.md); no real VM or live-host run happens without an explicit operation-specific approval. Do not present VM tests as production verification.
 
 Do not assume `make verify` is offline merely because of its name. If a project defines it as a production SSH/Ansible verification target, label it LIVE in documentation/output and require explicit approval before running it.
 
@@ -39,7 +39,7 @@ Offline tests should cover important wrapper boundaries with synthetic fixtures/
 - cleanup of temporary files/overlays;
 - expected stop behavior before any live mutation when preflight fails.
 
-These tests do not replace a separately authorized live run, but they should catch controller orchestration bugs before production contact.
+These tests do not replace a separately authorized live run, but they should catch controller orchestration bugs before production contact. For multi-stage workflows, add fail-closed tests at every stage frontier: verification-only skips, interruptions, default-deny prompts, repeat runs, pending markers, snapshot drift, trust changes, and exact public Make/CLI arguments. A successful stage postflight can be reused within the same invocation if independently authoritative; future invocations must reverify.
 
 ## Run discipline and recap
 

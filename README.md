@@ -166,6 +166,12 @@ Optional standards may be listed separately when they should only be applied for
 
 For Linux VPS provisioning, use [`ansible-infrastructure`](./profiles/ansible-infrastructure.yaml). It combines the [Ansible skill](./.agents/skills/ansible/SKILL.md) with task workflow, quality, GitHub Actions, documentation, and licensing standards. Add the optional `docker` skill when Docker-host setup is in scope, and `continuous-delivery` only when release deployment is in scope. Token-efficiency rules stay in the existing workflow/quality standards; Ansible-specific recap and validation guidance is in the Ansible skill.
 
+### Infrastructure acceptance and release lifecycle
+
+For multi-stage Linux host provisioning, the [Ansible skill](./.agents/skills/ansible/SKILL.md) routes to [staged initialization](./.agents/skills/ansible/references/staged-initialization.md) and [isolated VM E2E](./.agents/skills/ansible/references/vm-e2e.md) **only when relevant**. Keep independent stage verification, fail-closed recovery and SSH route transitions explicit. A recommended acceptance sequence is: targeted offline checks → independent CI → separately authorized VM E2E → separately authorized real-host provisioning/verification → post-reboot acceptance when required.
+
+Git delivery remains an independent approval boundary: feature PR to `develop` → release PR to `main` → user-authorized version tag/GitHub Release. Read the [Git delivery reference](./.agents/skills/task-development-workflow/references/git-delivery.md) for branch divergence, merge history and release checks. These are optional workflow phases, not automatic actions after successful CI.
+
 ### `bootstrap/`
 
 Contains initialization instructions for applying the standards to an existing or new repository.
