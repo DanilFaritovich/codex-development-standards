@@ -140,6 +140,25 @@ Git staging, commits, branch/ref mutation, push, Pull Request mutation, and merg
 primary-model responsibilities unless a narrower project rule explicitly permits an
 action. The merge boundary below still applies.
 
+## Integration and versioned release (only on explicit request)
+
+Normal development and release are separate approval boundaries:
+
+`feature/fix/docs branch from develop → PR into develop → independent CI → developer review/merge`
+
+`develop → release PR into main → independent CI → developer review/merge → tag/release at the intended main commit`
+
+Before a release PR:
+
+1. Inspect branch ancestry and divergence (`main...develop`); do not assume a GitHub UI message that a branch is behind means that code content was lost. Do not rewrite long-lived branches automatically.
+2. Check that intended feature/documentation PRs are merged into `develop`, the release diff is understood, and required CI on the target revision passes. A feature PR merge is not a production deployment.
+3. For a history-preserving release, prefer an explicit merge commit to a squash-only merge when future `main → develop` synchronization is expected; choose the repository's actual release policy, not a universal Git operation.
+4. Do not push, merge, synchronize long-lived branches, create a Git tag, or publish a GitHub Release unless the requested action was separately authorized. Creating a release PR does **not** authorize merging or tagging.
+5. After a requested and completed merge, verify the actual `main` commit before preparing a release tag. Check tag/version uniqueness and release status (draft vs pre-release vs stable). Do not invent a release tag, change versions, or claim a release was published before verification.
+6. Summarize user-visible changes, limitations and validation with explicit provenance: repository tests/CI, operator-reported VM E2E, operator-reported real-host execution, and independently observed deployment are **different** kinds of evidence. Avoid turning one run's elapsed time into a universal performance claim.
+
+After a release, confirm whether `develop` needs an explicit `main` synchronization before the next task branch. Do not silently update `develop` merely because `main` moved.
+
 ## Merge boundary
 
 Codex must not automatically merge the Pull Request.

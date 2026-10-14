@@ -166,6 +166,12 @@ Profiles должны ссылаться на существующие стан�
 
 Для подготовки Linux/VPS есть профиль [`ansible-infrastructure`](./profiles/ansible-infrastructure.yaml): [скилл Ansible](./.agents/skills/ansible/SKILL.md), workflow, качество, GitHub Actions, документация и лицензирование. Подключайте опциональный `docker` при настройке Docker на хосте, а `continuous-delivery` — при настройке доставки релизов. Общие правила экономии токенов остаются в существующих скиллах workflow/качества; специфичный для Ansible краткий вывод и проверка описаны в скилле Ansible.
 
+### Приёмка инфраструктуры и выпуск релиза
+
+Для многоэтапной настройки Linux-сервера [Ansible skill](./.agents/skills/ansible/SKILL.md) по необходимости загружает [поэтапную инициализацию](./.agents/skills/ansible/references/staged-initialization.md) и [E2E на изолированной VM](./.agents/skills/ansible/references/vm-e2e.md). Независимые проверки, STOP при неопределённости и безопасный переход SSH обязательны для соответствующих сценариев. Рекомендуемая последовательность: локальные offline-проверки → независимый CI → отдельно разрешённый VM E2E → отдельно разрешённое применение и проверка на VPS → проверка после reboot при необходимости.
+
+Git-поставка — отдельная граница согласия: feature PR в `develop` → release PR в `main` → явно разрешённые tag/GitHub Release. [Git delivery reference](./.agents/skills/task-development-workflow/references/git-delivery.md) описывает расхождение веток, merge и release checks. Успешный CI не запускает следующие этапы автоматически.
+
 ### `bootstrap/`
 
 Содержит инструкции для применения стандартов к существующему или новому репозиторию.

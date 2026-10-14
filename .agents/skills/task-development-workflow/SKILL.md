@@ -18,7 +18,8 @@ Use this core workflow for normal feature, fix, refactor, chore, and documentati
 - use an available optional execution worker for bounded high-output or mechanical loops
   when delegation clearly reduces primary-model context;
 - avoid repeated reads/checks;
-- leave remote publication, Pull Requests, and merge to the developer unless explicitly requested.
+- leave remote publication, Pull Requests, and merge to the developer unless explicitly requested;
+- treat code completion, offline CI, real-environment acceptance, documentation, and release as distinct checkpoints with their own evidence and approval.
 
 ## Core workflow
 
@@ -36,6 +37,10 @@ inspect branch/worktree
 -> local commit
 -> STOP (push/PR/merge only on explicit request)
 ```
+
+## Multi-stage infrastructure and release handoff
+
+For an infrastructure task, select the existing `ansible` skill and load its staged-initialization or VM-E2E reference only when those phases are requested. A passing offline `make check` or merged PR does not authorize host contact or prove successful deployment. Capture separately what the agent implemented, what CI verified, and what the operator actually ran. When a feature is accepted and a versioned release is requested, use [references/git-delivery.md](./references/git-delivery.md) for the `develop → main → tag/release` boundary. Neither PR creation nor a successful test authorizes a merge or tag by itself.
 
 ## Explicit task stop points
 
