@@ -106,12 +106,12 @@ skills:
     description: License selection and preservation rules.
 
 profiles:
-  vue-static-portfolio:
-    path: profiles/vue-static-portfolio.yaml
-    tags: [vue, typescript, vite, portfolio, i18n, design-to-vue, static-site, github-actions]
+  vue-static-site:
+    path: profiles/vue-static-site.yaml
+    tags: [vue, typescript, vite, static-site, frontend, i18n, design-to-vue, github-actions]
     description: >
-      Static Vue portfolio with reusable design references, bilingual content,
-      targeted frontend checks and opt-in Docker/CD; no backend by default.
+      Vue sites deployed as static assets: landing pages, portfolios, documentation
+      and interactive content sites, with targeted checks and optional Docker/CD.
 
   fastapi-vue-clean:
     path: profiles/fastapi-vue-clean.yaml
