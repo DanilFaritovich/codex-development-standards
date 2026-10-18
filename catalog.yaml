@@ -70,6 +70,11 @@ skills:
     tags: [frontend, vue, testing, vitest, e2e]
     description: Vue unit, component, integration, and E2E testing conventions.
 
+  design-to-vue:
+    path: .agents/skills/design-to-vue/SKILL.md
+    tags: [frontend, vue, figma, svg, responsive, design, accessibility, localization, token-efficiency]
+    description: Translate local Figma/SVG/PNG design references into responsive Vue interfaces with targeted visual QA.
+
   docker:
     path: .agents/skills/docker/SKILL.md
     tags: [docker, compose, deployment, networking, health, nginx, redis, build-cache, least-privilege, security]
@@ -101,6 +106,13 @@ skills:
     description: License selection and preservation rules.
 
 profiles:
+  vue-static-portfolio:
+    path: profiles/vue-static-portfolio.yaml
+    tags: [vue, typescript, vite, portfolio, i18n, design-to-vue, static-site, github-actions]
+    description: >
+      Static Vue portfolio with reusable design references, bilingual content,
+      targeted frontend checks and opt-in Docker/CD; no backend by default.
+
   fastapi-vue-clean:
     path: profiles/fastapi-vue-clean.yaml
     tags:
