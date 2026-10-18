@@ -1,6 +1,6 @@
 ---
 name: code-quality
-description: Core local quality workflow: safe deterministic auto-fix before targeted read-only validation, stable Make targets, deduplicated checks, and non-mutating CI. Load stack-specific references only when needed.
+description: "Core local quality workflow: safe deterministic auto-fix before targeted read-only validation, stable Make targets, deduplicated checks, and non-mutating CI. Load stack-specific references only when needed."
 ---
 
 # Code Quality Standard
