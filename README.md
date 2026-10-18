@@ -206,7 +206,7 @@ Do not modify application business logic during initialization unless required f
 
 ### Static Vue sites
 
-For a Vue 3 website served as built HTML/CSS/JavaScript files, use [`vue-static-site`](./profiles/vue-static-site.yaml). It fits portfolios, landing pages, documentation and other interactive client-rendered sites without a required application backend. Static deployment does **not** mean the interface is non-interactive: localization, menus, modals and external API calls can still work.
+For a Vue 3 website served as built HTML/CSS/JavaScript files, use [`vue-static-site`](./profiles/vue-static-site.yaml). It fits portfolios, landing pages, documentation and other interactive sites without a required application backend. Static deployment does **not** mean the interface is non-interactive: localization, menus, modals and external API calls can still work. The profile installs the framework-agnostic [`seo`](./.agents/skills/seo/SKILL.md) skill: select a rendering/metadata approach, configure crawlable URLs, canonical/hreflang for multilingual sites, and verify built HTML. Use SSG/prerendering when indexable content needs to be present in the initial HTML.
 
 The [`design-to-vue`](./.agents/skills/design-to-vue/SKILL.md) skill applies when translating design references into Vue. The [bootstrap guide](./bootstrap/vue-static-site.md) covers a standards-only start and optional repository-specific authorization for `gh` PR delivery without automatic merge. Docker/CD remain optional. For server-side rendering or a mandatory backend, use another profile or extend the project deliberately.
 
