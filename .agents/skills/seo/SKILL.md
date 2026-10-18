@@ -1,6 +1,6 @@
 ---
 name: seo
-description: Reusable technical SEO for public websites and web apps: discoverable HTML, metadata, canonical URLs, multilingual hreflang, sitemap, robots, structured data, performance and release verification. Framework-agnostic.
+description: "Reusable technical SEO for public websites and web apps: discoverable HTML, metadata, canonical URLs, multilingual hreflang, sitemap, robots, structured data, performance and release verification. Framework-agnostic."
 ---
 
 # Technical SEO Standard
