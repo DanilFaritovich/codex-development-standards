@@ -14,7 +14,9 @@ Use this guide when the developer requests initialization of a Vue website deplo
 6. Where a visual design exists, place canonical assets under `design/reference/`; do not store redundant large archives and duplicate exports or turn vector screenshots into runtime page markup. If there are no design references, skip this step.
 7. For a standards-only bootstrap, do **not** scaffold Vue, install application dependencies, or configure Docker/deployment. Those belong to later stages.
 8. Validate installed files and references using targeted checks. Do not claim a frontend build passed before an application exists.
-9. If SEO needs each page or language to be indexable as HTML, consider SSG/prerendering separately. For server-rendered or backend-centric apps, adapt the profile or select a more appropriate one.
+9. Install the core `seo` skill with the profile. Record project-specific indexable routes, metadata strategy and the selected rendering approach in the requested `ARCHITECTURE.md`. A standards-only bootstrap decides/document these requirements but does not yet implement metadata, SSG or a sitemap.
+10. For multilingual sites, define independent language URLs (e.g. `/en/` and `/ru/`), route-to-locale mapping, per-language canonical and reciprocal hreflang, and built HTML expectations. Do not impose multilingual routes on monolingual sites.
+11. If search engines or social preview crawlers need meaningful initial HTML, consider SSG/prerendering before deciding on client-only rendering. For server-rendered or backend-centric apps, adapt the profile or select a more appropriate one.
 
 ## Project-specific delivery authorization
 
@@ -35,11 +37,11 @@ Before PR delivery:
 
 ## Suggested subsequent phases (adapt to the site)
 
-1. Vue 3 / TypeScript / Vite foundation, optional Vue I18n, Make targets and initial CI.
+1. Vue 3 / TypeScript / Vite foundation, optional Vue I18n, select CSR vs SSG/prerender based on SEO needs, Make targets and initial CI.
 2. Responsive sections/layout and components based on available designs.
 3. Typed content/catalog and conditional action links.
-4. Localization, forms, media or other interactions required by the site.
-5. Browser visual QA, accessibility, useful unit/component and critical E2E coverage.
+4. Localization, per-route SEO metadata and crawlable language paths where applicable, forms/media or other required interactions.
+5. Built-HTML SEO checks, sitemap/robots validation, browser visual QA, accessibility, useful unit/component and critical E2E coverage.
 6. Install optional `docker` / `continuous-delivery` for production packaging and delivery only when in scope. Actual deployment to live systems requires separate authorization.
 
 Read only relevant skills and references. Prefer `rg`, bounded logs, targeted tests and `make fix -> targeted checks -> make check`, with full CI in GitHub rather than repeated local runs.
