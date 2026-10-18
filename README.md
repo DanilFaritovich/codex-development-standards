@@ -204,9 +204,11 @@ Adapt the standards to the actual repository structure, architecture, tools, and
 Do not modify application business logic during initialization unless required for the development infrastructure.
 ```
 
-### Static Vue portfolio
+### Static Vue sites
 
-For a design-led static Vue portfolio, use [`vue-static-portfolio`](./profiles/vue-static-portfolio.yaml) and the [`design-to-vue`](./.agents/skills/design-to-vue/SKILL.md) skill. The [bootstrap guide](./bootstrap/vue-static-portfolio.md) explains a standards-only first stage, local design references, and project-specific authorization for Codex to make local commits and open PRs through `gh` without automatically merging. Docker and continuous-delivery skills remain optional until deployment work.
+For a Vue 3 website served as built HTML/CSS/JavaScript files, use [`vue-static-site`](./profiles/vue-static-site.yaml). It fits portfolios, landing pages, documentation and other interactive client-rendered sites without a required application backend. Static deployment does **not** mean the interface is non-interactive: localization, menus, modals and external API calls can still work.
+
+The [`design-to-vue`](./.agents/skills/design-to-vue/SKILL.md) skill applies when translating design references into Vue. The [bootstrap guide](./bootstrap/vue-static-site.md) covers a standards-only start and optional repository-specific authorization for `gh` PR delivery without automatic merge. Docker/CD remain optional. For server-side rendering or a mandatory backend, use another profile or extend the project deliberately.
 
 ### Ansible infrastructure project
 
