@@ -204,6 +204,10 @@ Adapt the standards to the actual repository structure, architecture, tools, and
 Do not modify application business logic during initialization unless required for the development infrastructure.
 ```
 
+### Static Vue portfolio
+
+For a design-led static Vue portfolio, use [`vue-static-portfolio`](./profiles/vue-static-portfolio.yaml) and the [`design-to-vue`](./.agents/skills/design-to-vue/SKILL.md) skill. The [bootstrap guide](./bootstrap/vue-static-portfolio.md) explains a standards-only first stage, local design references, and project-specific authorization for Codex to make local commits and open PRs through `gh` without automatically merging. Docker and continuous-delivery skills remain optional until deployment work.
+
 ### Ansible infrastructure project
 
 For an Ansible-based Linux server repository, select the `ansible-infrastructure` profile after reading `catalog.yaml`. Install only its applicable skills and keep `.codex-standards.lock.yaml` pinned to the exact upstream revision. Static CI must not contact production; applying playbooks, even in `--check` mode, requires separate authorization for a live host.
