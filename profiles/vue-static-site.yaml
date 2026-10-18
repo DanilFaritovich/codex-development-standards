@@ -1,5 +1,5 @@
 name: vue-static-site
-version: 1
+version: 2
 
 description: >
   Statically deployed Vue 3 + TypeScript websites, such as portfolios,
@@ -14,6 +14,7 @@ skills:
   - vue
   - vue-testing
   - design-to-vue
+  - seo
   - github-actions
   - documentation
 
@@ -35,10 +36,14 @@ defaults:
     language: typescript
     build: vite
     deployment: static-assets
-    rendering: client-side-by-default
+    rendering: choose-csr-or-prerender-based-on-indexing-needs
     content: local-or-external-api
     no_dedicated_backend_by_default: true
     localization: vue-i18n-when-needed
+    multilingual_seo:
+      enable_for_translated_sites: true
+      direct_language_paths: true
+      metadata_and_hreflang_per_locale: true
     validation:
       - eslint
       - prettier
@@ -49,6 +54,11 @@ defaults:
     local_references: design/reference/
     guidelines: design/DESIGN.md
     visual_qa: browser-screenshots-when-references-exist
+  seo:
+    apply_skill: seo
+    public_html_inspection: true
+    generate_sitemap_for_indexable_routes: true
+    no_production_domain_until_known: true
   checks:
     local: "make fix -> targeted checks -> make check"
     extended: make verify
