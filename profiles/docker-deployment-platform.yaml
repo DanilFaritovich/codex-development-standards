@@ -1,0 +1,76 @@
+name: docker-deployment-platform
+version: 1
+
+description: >
+  Central deployment-control repository for a small single-host Docker Compose
+  platform: declarative service registry, GHCR image digests, reconciled
+  application rollouts and a shared Caddy HTTPS gateway. Application repositories
+  build/publish their own images; server provisioning is owned separately.
+
+skills:
+  - task-development-workflow
+  - standards-sync
+  - code-quality
+  - docker
+  - github-actions
+  - continuous-delivery
+  - caddy-gateway
+  - gitops-deployment
+  - documentation
+  - licensing
+
+optional_skills:
+  - ansible
+  - python-testing
+  - structured-logging
+
+defaults:
+  standards_sync:
+    lock_file: .codex-standards.lock.yaml
+    incremental: true
+  branches:
+    integration: develop
+    stable: main
+    task_base: develop
+  platform:
+    target: single-linux-vps
+    runtime: docker-compose
+    gateway: caddy
+    registry: ghcr
+    desired_state: versioned-per-service-manifests
+    image_identity: immutable-sha256-digest
+    service_registration: validated-and-approved
+    controller: choose-cli-or-ci-first
+    no_kubernetes_by_default: true
+    host_provisioning_owned_externally: true
+    app_build_publishing_owned_by_application_repos: true
+    application_ports_public: false
+    shared_gateway_network_owned_here: true
+    stateful_data_never-automatically-deleted: true
+  delivery:
+    initial_stage: offline-foundation
+    live_vps_changes: explicit-operator-authorization
+    production_automation: only-after-policy-approval-and-verification
+    no_untrusted_pr_secrets: true
+    serialize_host_mutations: true
+    verify-health-before-public-route: true
+    preserve-last-known-good-state: true
+  checks:
+    local: "make fix -> targeted checks -> make check"
+    extended: make verify
+    ci: make ci
+    no_live_vps_in_ci: true
+  documentation:
+    languages: [en, ru]
+
+adaptation:
+  inspect_real_repository_and_operator_requirements: true
+  install_only_applicable_skills: true
+  install_optional_skills_only_for_active_work: true
+  use_optional_python_testing_only_if_controller_is_python: true
+  use_optional_ansible_only_if_playbooks_are_actually_part_of_project: true
+  preserve_project_specific_instructions: true
+  do_not_install_a_privileged_daemon_without_requirement: true
+  do_not_claim_production_integration_from_offline_tests: true
+  create_project_specific_agents_md_during_explicit_bootstrap: true
+  create_architecture_md_when_requested: true
