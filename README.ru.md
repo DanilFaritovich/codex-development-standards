@@ -22,6 +22,7 @@
 - **API guardrails** — rate limits, ограничения размера запросов и входных данных.
 - **CI/CD** — соглашения для автоматизированной проверки и доставки.
 - **Infrastructure as Code** — безопасная идемпотентная настройка Linux-серверов через Ansible.
+- **Общий gateway и GitOps** — маршрутизация Caddy, регистрация сервисов, развёртывание образов по digest и восстановление.
 - **PDF-документы и просмотрщики** — многоязычные документы с проверенными фактами и безопасный PDF.js.
 - **Приёмка сайтов** — браузерные, визуальные, адаптивные проверки, accessibility и локализация.
 - **Profiles** — готовые комбинации стандартов для распространённых типов проектов.
@@ -177,6 +178,12 @@ Profiles должны ссылаться на существующие стан�
 Для многоэтапной настройки Linux-сервера [Ansible skill](./.agents/skills/ansible/SKILL.md) по необходимости загружает [поэтапную инициализацию](./.agents/skills/ansible/references/staged-initialization.md) и [E2E на изолированной VM](./.agents/skills/ansible/references/vm-e2e.md). Независимые проверки, STOP при неопределённости и безопасный переход SSH обязательны для соответствующих сценариев. Рекомендуемая последовательность: локальные offline-проверки → независимый CI → отдельно разрешённый VM E2E → отдельно разрешённое применение и проверка на VPS → проверка после reboot при необходимости.
 
 Git-поставка — отдельная граница согласия: feature PR в `develop` → release PR в `main` → явно разрешённые tag/GitHub Release. [Git delivery reference](./.agents/skills/task-development-workflow/references/git-delivery.md) описывает расхождение веток, merge и release checks. Успешный CI не запускает следующие этапы автоматически.
+
+### Централизованная Docker-платформа деплоя
+
+Для единого VPS, где общий Caddy и развёртывание Docker-приложений из независимо опубликованных образов GHCR управляются через реестр сервисов, используйте профиль [`docker-deployment-platform`](./profiles/docker-deployment-platform.yaml). Он объединяет [`caddy-gateway`](./.agents/skills/caddy-gateway/SKILL.md), [`gitops-deployment`](./.agents/skills/gitops-deployment/SKILL.md) и существующие правила Docker, CI/CD, Git workflow и документации.
+
+[Инструкция по установке профиля](./bootstrap/docker-deployment-platform.md) разделяет установку стандартов, offline-разработку контроллера, локальные E2E и отдельно разрешённое подключение production. Само наличие профиля **не означает**, что контроллер, публичный DNS, HTTPS или доступ к VPS уже настроены. Загружайте только необходимые для задачи справочники; необязательные Ansible/Python-скиллы не устанавливайте автоматически.
 
 ### `bootstrap/`
 
