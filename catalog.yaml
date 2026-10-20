@@ -95,6 +95,16 @@ skills:
     tags: [qa, website, playwright, visual, responsive, localization, accessibility, seo, testing]
     description: Browser-based functional and visual QA, multilingual viewport matrices, accessible interactions and owner acceptance.
 
+  caddy-gateway:
+    path: .agents/skills/caddy-gateway/SKILL.md
+    tags: [caddy, gateway, reverse-proxy, https, tls, docker, routing, reload]
+    description: Shared Caddy HTTPS gateway, deterministic route generation, safe reloads, upstream isolation and live-TLS verification boundaries.
+
+  gitops-deployment:
+    path: .agents/skills/gitops-deployment/SKILL.md
+    tags: [gitops, deployment, controller, registry, reconcile, ghcr, digest, health, rollback]
+    description: Declarative Docker service registration, immutable GHCR image rollout, health-gated reconciliation and recovery for a single VPS.
+
   docker:
     path: .agents/skills/docker/SKILL.md
     tags: [docker, compose, deployment, networking, health, nginx, redis, build-cache, least-privilege, security]
@@ -150,6 +160,13 @@ profiles:
     description: >
       Full-stack FastAPI + Vue profile with clean backend architecture,
       testing, persistence, API guardrails, structured logging, Docker, CI, documentation, and licensing.
+
+  docker-deployment-platform:
+    path: profiles/docker-deployment-platform.yaml
+    tags: [deployment, gitops, caddy, docker, ghcr, reverse-proxy, single-vps, github-actions]
+    description: >
+      A central single-VPS Docker Compose deployment platform with a shared Caddy
+      gateway, service registry, verified image digests, offline CI and gated rollouts.
 
   ansible-infrastructure:
     path: profiles/ansible-infrastructure.yaml
