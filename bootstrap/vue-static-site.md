@@ -44,4 +44,6 @@ Before PR delivery:
 5. Built-HTML SEO checks, sitemap/robots validation, browser visual QA, accessibility, useful unit/component and critical E2E coverage.
 6. Install optional `docker` / `continuous-delivery` for production packaging and delivery only when in scope. Actual deployment to live systems requires separate authorization.
 
+Install optional `website-qa` for a full browser/owner acceptance audit, `pdfjs-viewer` for an actual embedded PDF.js viewer, and `pdf-documents` only for authoring PDF artifacts. Docker's static-site and CD's image-producer references apply when the site is packaged into an image consumed by an independently managed deployment controller. Do not install every optional skill during bootstrap.
+
 Read only relevant skills and references. Prefer `rg`, bounded logs, targeted tests and `make fix -> targeted checks -> make check`, with full CI in GitHub rather than repeated local runs.
