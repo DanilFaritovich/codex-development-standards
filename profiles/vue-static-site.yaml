@@ -1,5 +1,5 @@
 name: vue-static-site
-version: 2
+version: 3
 
 description: >
   Statically deployed Vue 3 + TypeScript websites, such as portfolios,
@@ -19,6 +19,9 @@ skills:
   - documentation
 
 optional_skills:
+  - website-qa
+  - pdfjs-viewer
+  - pdf-documents
   - docker
   - continuous-delivery
   - licensing
