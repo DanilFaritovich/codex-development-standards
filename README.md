@@ -22,6 +22,7 @@ The standards are organized by responsibility:
 - **API guardrails** — rate limits, bounded request bodies, and input constraints.
 - **CI/CD** — automated validation and delivery conventions.
 - **Infrastructure as Code** — safe, idempotent Ansible host provisioning and validation.
+- **Shared gateway and GitOps** — Caddy routing, service registration, immutable image deployments and recovery boundaries.
 - **PDF artifacts and viewers** — evidence-based multilingual documents and safe PDF.js interaction layers.
 - **Website acceptance** — real-browser responsive, visual, accessibility and localized QA.
 - **Profiles** — predefined combinations of standards for common project types.
@@ -177,6 +178,12 @@ For Linux VPS provisioning, use [`ansible-infrastructure`](./profiles/ansible-in
 For multi-stage Linux host provisioning, the [Ansible skill](./.agents/skills/ansible/SKILL.md) routes to [staged initialization](./.agents/skills/ansible/references/staged-initialization.md) and [isolated VM E2E](./.agents/skills/ansible/references/vm-e2e.md) **only when relevant**. Keep independent stage verification, fail-closed recovery and SSH route transitions explicit. A recommended acceptance sequence is: targeted offline checks → independent CI → separately authorized VM E2E → separately authorized real-host provisioning/verification → post-reboot acceptance when required.
 
 Git delivery remains an independent approval boundary: feature PR to `develop` → release PR to `main` → user-authorized version tag/GitHub Release. Read the [Git delivery reference](./.agents/skills/task-development-workflow/references/git-delivery.md) for branch divergence, merge history and release checks. These are optional workflow phases, not automatic actions after successful CI.
+
+### Central Docker deployment platform
+
+For a single-VPS platform that manages the shared Caddy gateway and declaratively deploys Docker applications from independently published GHCR images, use [`docker-deployment-platform`](./profiles/docker-deployment-platform.yaml). This profile combines [`caddy-gateway`](./.agents/skills/caddy-gateway/SKILL.md) and [`gitops-deployment`](./.agents/skills/gitops-deployment/SKILL.md) with existing Docker, CI/CD, workflow and documentation standards.
+
+The [deployment platform bootstrap guide](./bootstrap/docker-deployment-platform.md) separates standards installation, offline controller development, local E2E and separately authorized production integration. It does **not** assume that a working controller, public DNS, HTTPS or VPS credentials already exist. Read only the skill references needed for the task; do not automatically install optional Ansible or Python skills.
 
 ### `bootstrap/`
 
