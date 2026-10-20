@@ -22,6 +22,8 @@ The standards are organized by responsibility:
 - **API guardrails** — rate limits, bounded request bodies, and input constraints.
 - **CI/CD** — automated validation and delivery conventions.
 - **Infrastructure as Code** — safe, idempotent Ansible host provisioning and validation.
+- **PDF artifacts and viewers** — evidence-based multilingual documents and safe PDF.js interaction layers.
+- **Website acceptance** — real-browser responsive, visual, accessibility and localized QA.
 - **Profiles** — predefined combinations of standards for common project types.
 
 Only the standards relevant to a project should be installed.
@@ -132,6 +134,10 @@ For example:
 - `github-actions` should define CI behavior.
 
 Avoid putting unrelated concerns into one large instruction file.
+
+For portfolio-style websites, select [`website-qa`](./.agents/skills/website-qa/SKILL.md) when auditing complete user journeys, [`pdfjs-viewer`](./.agents/skills/pdfjs-viewer/SKILL.md) for an embedded PDF.js viewer, and [`pdf-documents`](./.agents/skills/pdf-documents/SKILL.md) when creating or updating downloadable PDF artifacts. These are independent, optional concerns; adding them to a profile does not mean Codex should load all three on every task.
+
+The existing [Docker skill](./.agents/skills/docker/SKILL.md) contains a static-site HTTP/container reference. The existing [Continuous Delivery skill](./.agents/skills/continuous-delivery/SKILL.md) contains a GHCR image-producer reference for repositories whose VPS deployment and shared reverse proxy are managed elsewhere. No unimplemented deployment controller is bundled with these standards.
 
 ### `profiles/`
 
