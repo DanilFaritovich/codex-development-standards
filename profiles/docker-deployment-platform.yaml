@@ -46,7 +46,7 @@ defaults:
     app_build_publishing_owned_by_application_repos: true
     application_ports_public: false
     shared_gateway_network_owned_here: true
-    stateful_data_never-automatically-deleted: true
+    stateful_data_never_automatically_deleted: true
   delivery:
     initial_stage: offline-foundation
     live_vps_changes: explicit-operator-authorization
