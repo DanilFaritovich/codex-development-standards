@@ -68,6 +68,8 @@ Production should expose only the public gateway/reverse proxy whenever practica
 
 For production routing, service networks, frontend/backend/database exposure, and Nginx edge behavior, read [references/production-networking.md](./references/production-networking.md).
 
+For a statically built/SSG site packaged as an independent container behind a shared gateway, read [references/static-site-runtime.md](./references/static-site-runtime.md). Verify actual container HTTP responses, locale paths, 404 behavior, assets, and the separation between build-time public metadata and runtime state.
+
 ## Redis
 
 When Redis is required for distributed quota/cache state, keep it internal, health-checked, and explicitly configured.
