@@ -80,6 +80,21 @@ skills:
     tags: [seo, discoverability, multilingual, hreflang, canonical, sitemap, robots, prerender, structured-data]
     description: Framework-agnostic technical SEO for public sites, metadata, crawlable pages, language routes and release verification.
 
+  pdf-documents:
+    path: .agents/skills/pdf-documents/SKILL.md
+    tags: [pdf, documents, resume, localization, typography, links, validation]
+    description: Create and validate professional, role-targeted and multilingual selectable PDF documents with real clickable links.
+
+  pdfjs-viewer:
+    path: .agents/skills/pdfjs-viewer/SKILL.md
+    tags: [pdf, pdfjs, vue, viewer, annotation-layer, accessibility, responsive, testing]
+    description: Secure PDF.js previews, safe URL annotations, lazy workers, responsive sizing, and deterministic interaction tests.
+
+  website-qa:
+    path: .agents/skills/website-qa/SKILL.md
+    tags: [qa, website, playwright, visual, responsive, localization, accessibility, seo, testing]
+    description: Browser-based functional and visual QA, multilingual viewport matrices, accessible interactions and owner acceptance.
+
   docker:
     path: .agents/skills/docker/SKILL.md
     tags: [docker, compose, deployment, networking, health, nginx, redis, build-cache, least-privilege, security]
