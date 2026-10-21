@@ -15,8 +15,8 @@ Use this core workflow for normal feature, fix, refactor, chore, and documentati
 - follow existing architecture and conventions;
 - normalize before read-only validation;
 - use targeted checks during development;
-- use an available optional execution worker for bounded high-output or mechanical loops
-  when delegation clearly reduces primary-model context;
+- route eligible noisy inspections and mechanical fix/validation loops through an
+  available MCP execution worker; keep design, security and live operations here;
 - avoid repeated reads/checks;
 - leave remote publication, Pull Requests, and merge to the developer unless explicitly requested;
 - treat code completion, offline CI, real-environment acceptance, documentation, and release as distinct checkpoints with their own evidence and approval.
@@ -87,16 +87,20 @@ Read `ARCHITECTURE.md` only when the task affects architecture, persistence, ser
 
 Inspect only relevant source, tests, interfaces, configuration, analogous implementations, and documentation.
 
-For large repositories, continuations, noisy commands, large diffs, or optional delegated
-execution workers, read [references/context-efficiency.md](./references/context-efficiency.md).
+For large repositories, continuations, noisy commands, large diffs, or when an
+MCP execution worker is advertised, read
+[references/context-efficiency.md](./references/context-efficiency.md).
 
-An execution worker is an optional capability, not a project dependency. When
-`codex-free-worker-mcp` is available, prefer its `inspect_task` for bounded
-high-output inspection/diagnostics and `fix_task` for unambiguous mechanical
-diagnose/fix/rerun loops when delegation will materially reduce primary-model context.
-Follow [references/context-efficiency.md](./references/context-efficiency.md) for routing
-and safety boundaries. If that MCP is unavailable, continue directly without treating
-that as an error or changing the project to install/configure it.
+At the start of a nontrivial task, determine whether the registered MCP tools include
+`free_worker.inspect_task` and `free_worker.fix_task` (tool names may be namespaced).
+When available, **delegate eligible bounded, high-output inspection to `inspect_task`
+and unambiguous mechanical fix/check loops to `fix_task`**; do not substitute
+repeated direct commands without a concrete reason. Delegate a whole bounded loop,
+not each tiny shell command. Direct small, low-output checks remain appropriate.
+Keep architecture, security, secrets, state recovery, live operations, Git delivery
+and final acceptance with the primary agent. If the worker is unavailable or
+unsuitable, proceed directly, mention the reason briefly and never install or
+reconfigure it as a side effect. See the reference for routing and failure cases.
 
 ## Determine and implement scope
 
