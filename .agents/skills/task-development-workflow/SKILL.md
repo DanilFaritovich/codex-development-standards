@@ -81,7 +81,22 @@ Never perform normal task development directly on `develop` or `main`; task comm
 
 ## Load only relevant context
 
-Read project-local `AGENTS.md` first.
+Read project-local `AGENTS.md` first, then this core workflow skill. **Before
+starting nontrivial work, select and read every task-relevant installed
+`SKILL.md`** using the project's skill map or available skill inventory.
+For each selected skill, load the references whose documented trigger applies
+to the task; do not assume reading `SKILL.md` alone satisfies its requirements.
+In particular, load:
+
+- `references/context-efficiency.md` for MCP delegation, long/noisy
+  investigation, repeated errors, or context pressure;
+- `references/validation.md` for code, tests, build, CI or integration changes;
+- `references/git-delivery.md` before branch, commit, push, PR or release work.
+
+If an applicable installed skill or required reference is unreadable, say so
+rather than silently skipping it. Do not load irrelevant skills, repeatedly
+reread unchanged instructions, or download/update upstream standards during
+normal tasks; synchronize only through an explicitly requested standards-sync.
 
 Read `ARCHITECTURE.md` only when the task affects architecture, persistence, service communication, infrastructure, deployment, or external integrations.
 
