@@ -26,6 +26,8 @@ For each indexable route provide:
 
 Maintain metadata in one reusable per-route/content mechanism rather than scattering hardcoded copies across components. Browser-only metadata mutation is not a substitute for meaningful HTML when non-JS consumers need previews.
 
+Derive absolute SEO URLs from confirmed, centrally validated origin configuration for the relevant site/route; use an explicit mapping when languages or sites have different hosts. If no origin is known/configured, omit output that needs it rather than emitting a placeholder domain or deriving it from an untrusted request host. A supplied malformed origin should fail configuration/build validation instead of silently producing broken URLs. Apply the project's production HTTPS policy while keeping legitimate local/test settings explicit.
+
 ## Multilingual URLs (when the site has multiple indexable languages)
 
 - Prefer a stable, directly loadable URL for each translated version, for example `/en/` and `/ru/`. This is a conditional pattern, **not** a requirement for monolingual sites.
@@ -38,7 +40,8 @@ Maintain metadata in one reusable per-route/content mechanism rather than scatte
 
 ## Crawl files and delivery
 
-- Generate a `sitemap.xml` with absolute canonical URLs for actual indexable routes; optionally include multilingual alternates correctly if the implementation supports them.
+- When canonical origins are configured, generate a `sitemap.xml` with absolute canonical URLs for actual indexable routes; optionally include multilingual alternates correctly if the implementation supports them. Do not advertise a sitemap in robots when that build omits it.
+- Keep the generated/public route set distinct from the indexable route set. Localized utility, preview or diagnostic pages may need static HTML and an explicit noindex policy; they must not enter sitemap or indexable-language alternate groups merely because they were generated. Choose canonical behavior for such pages deliberately rather than imposing a blanket rule on all noindex pages.
 - Configure `robots.txt` carefully. Never assume `Disallow` is equivalent to a `noindex` directive. Do not expose private information or secrets in crawl files.
 - Verify domain, canonical host, HTTPS, redirects, status codes, routing and static asset URLs only against a real environment; do not invent production domains or claim the site is publicly indexed.
 - Keep production Caddy/Nginx/CDN route behavior consistent with the generated site: direct GET `/en/` and `/ru/` must serve the intended localized document, not a blanket SPA fallback when prerendered HTML is intended.
@@ -48,6 +51,7 @@ Maintain metadata in one reusable per-route/content mechanism rather than scatte
 
 - For changed routes, inspect the **built HTML** and response (not just the browser after hydration) for actual content, title, canonical, hreflang, OG and robots directives.
 - Validate `sitemap.xml` URLs, page status/redirects and localized alternates. Ensure non-indexable pages and broken URLs are not included.
+- When origin is optional, cover both absent-origin output and a configured-origin build. Check invalid configuration rejection and indexability exclusions when those policies change.
 - Test narrow viewport usability, meaningful content visibility, page performance and accessibility, including Core Web Vitals where possible; these support user experience but do not guarantee rankings.
 - Keep validation compact. Run focused checks for affected routes and one broader SEO smoke check before release; do not dump complete crawls and unbounded verbose logs into agent context.
 - Report what has been verified locally versus what still requires live-domain verification. Never guarantee indexing, rankings or search-result appearance.
