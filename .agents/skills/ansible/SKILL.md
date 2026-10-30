@@ -5,7 +5,7 @@ description: Safe, idempotent Linux host provisioning with Ansible; use for inve
 
 # Ansible Infrastructure Standard
 
-Use for Infrastructure as Code that configures Linux hosts. This skill governs Ansible implementation, not application packaging or release delivery.
+Use for Infrastructure as Code that configures Linux hosts. This skill governs Ansible implementation, not application packaging or release delivery; select the workflow/GitHub Actions skills for those concerns.
 
 ## Core invariants
 
@@ -15,6 +15,8 @@ Use for Infrastructure as Code that configures Linux hosts. This skill governs A
 - Preserve existing host configuration and unrelated changes. Make package, file, service, user, and network changes explicit and reviewable.
 - Parameterize host names, addresses, ports, SSH users, networking, and versions. Do not hardcode one operator's machine or provider into reusable standards.
 - Use handlers for service reload/restart only when managed configuration changes. Validate configuration before activation where supported.
+- When building a multi-stage operator CLI, define explicit apply/verify boundaries: successful configuration is not evidence of independent SSH/sudo/service access; a failure must STOP later stages without implicit retry, cleanup, or rollback.
+- Treat live convergence and destructive tests as separate activities: build offline regression coverage first, then use an owned isolated VM, then request explicit authorization for each real-host action.
 - Use `become` only for tasks requiring elevated privileges; avoid leaking credentials via command arguments, environment, task output, or registered results.
 
 ## Production boundary
@@ -42,6 +44,8 @@ Read a reference only when its subject is in scope:
 - [references/ssh-firewall.md](./references/ssh-firewall.md): SSH daemon/socket, access restrictions, firewall, and lockout prevention.
 - [references/docker-host.md](./references/docker-host.md): Docker Engine, Compose plugin, host networks, and permission boundaries.
 - [references/validation.md](./references/validation.md): Makefile/CI checks, live dry runs, structured failure diagnosis, and output limits.
+- [references/staged-initialization.md](./references/staged-initialization.md): multi-stage bootstrap-to-hardening/operations orchestration, independent postflight, safe continuation, SSH port migration, and resumability boundaries.
+- [references/vm-e2e.md](./references/vm-e2e.md): owner-isolated VM fixture design, lifecycle/user/SWAP/reboot exercises, acceptance ordering, and evidence before a real VPS rollout.
 
 When application containers or release workflows are in scope, also select the existing `docker` or `continuous-delivery` skill respectively. Do not copy their normative rules into this skill.
 
@@ -54,6 +58,7 @@ inspect local project + current host-access contract
 -> safe local normalization where available
 -> targeted offline validation
 -> one aggregate local check
+-> optional, explicitly approved isolated VM E2E before production
 -> review diff, safety, inventory and secret boundaries
 -> commit / push task branch / PR / CI
 -> developer review

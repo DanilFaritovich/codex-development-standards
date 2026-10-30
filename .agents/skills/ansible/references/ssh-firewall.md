@@ -15,6 +15,9 @@ Read for any change to SSH authentication, listening ports, systemd socket activ
 - Check rendered SSH configuration with `sshd -t` or the supported host equivalent **before** applying it.
 - When socket activation is active, ensure intended port changes are reflected in the effective socket listeners, not just in `sshd_config`. Validate the resulting listeners after any approved reload.
 - Reload the narrowly affected service/socket only when needed; do not reboot as a shortcut.
+- When migrating between ports, add the new listener/provider firewall allowance before retiring the old route. Distinguish configured server listeners, server firewall rules, externally verified controller routes, and host-key trust for each endpoint.
+- When an operator cannot reach the old port from the current network, narrowing external probes to the proven new port must not silently close the old listener or claim the old route was externally verified.
+- For a reinstalled host or changed known-host fingerprint, stop; establish identity out-of-band before updating only the stale host:port trust entry. Strict checking stays enabled. Cross-port trust transfer must independently prove the identity; never blindly reuse keyscan output.
 - Verify a fresh SSH connection and required sudo access before disabling a fallback user, password authentication, or an existing port.
 - If the connection drops or verification fails, stop. Use the preplanned recovery procedure; do not blindly retry SSH changes.
 

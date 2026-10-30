@@ -20,8 +20,9 @@ Place near the top, in this order:
 
 1. Project title (`# ...`), with an optional restrained project-related emoji only if consistent with the repo.
 2. Visible language navigation (`**English** | [Русский](README.ru.md)` and its mirrored RU version) when bilingual.
-3. **Linked badge strip** with the principal *verified* technologies and signals, directly under the title/language navigation, before the long explanation. Use small inline Shields.io/GitHub Actions Markdown images, like the linked badges already used in the portfolio projects.
-4. One or two concise introductory paragraphs (or a short one-line description) stating actual purpose and boundaries. A divider (`---`) may separate the header from the first section when it improves readability.
+3. A concise introduction stating the actual purpose, audience and useful outcome.
+4. A prominent standalone link to the real website/demo when available, clearly distinguished from an author's portfolio link. Do not invent a destination when there is no public application.
+5. A **linked badge strip** with the principal *verified* technologies and signals when useful, after the introduction and primary website link. Use small inline Shields.io/GitHub Actions Markdown images, like the linked badges already used in the portfolio projects.
 
 ### Badge rules
 
@@ -42,13 +43,16 @@ The following demonstrates syntax only; substitute the *actual* repository and t
 
 **English** | [Русский](README.ru.md)
 
+Short factual description of the project...
+
+**[Open the website → <confirmed host>](<confirmed website URL>)**
+
 [![Python](https://img.shields.io/badge/Python-3.12-3776AB?logo=python&logoColor=white)](https://www.python.org/)
 [![Ansible](https://img.shields.io/badge/Ansible-Automation-EE0000?logo=ansible&logoColor=white)](https://docs.ansible.com/)
 [![Docker](https://img.shields.io/badge/Docker-Engine-2496ED?logo=docker&logoColor=white)](https://docs.docker.com/)
 [![CI](https://github.com/OWNER/REPO/actions/workflows/ci.yml/badge.svg)](https://github.com/OWNER/REPO/actions/workflows/ci.yml)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-Short factual description of the project...
 ```
 
 Use `OWNER`, `REPO`, workflow, license, version and badge subjects **only after replacing/checking them**. The example is not a ready-made template asserting that every project uses Python 3.12, Ansible, Docker or MIT.

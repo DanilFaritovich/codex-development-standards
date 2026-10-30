@@ -138,9 +138,13 @@ Use [references/production-integration.md](./references/production-integration.m
 
 Do not redesign a valid foundation during integration unless a concrete incompatibility is found.
 
+## Image publishing without application-owned production deployment
+
+When a service repository owns only image build/publish and a separate deployment-controller repository owns Caddy, VPS rollout and service reconciliation, read [references/image-producer.md](./references/image-producer.md). This is an image-producer foundation, not a completed end-to-end CD system. Do not require the application to contact the server or maintain the shared gateway.
+
 ## Context loading
 
-Load only the reference for the active phase.
+Load only the reference for the active phase, plus the image-producer reference when this separation of responsibilities actually applies.
 
 Do not read both phase references merely because the project eventually needs both.
 

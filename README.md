@@ -22,6 +22,9 @@ The standards are organized by responsibility:
 - **API guardrails** — rate limits, bounded request bodies, and input constraints.
 - **CI/CD** — automated validation and delivery conventions.
 - **Infrastructure as Code** — safe, idempotent Ansible host provisioning and validation.
+- **Shared gateway and GitOps** — Caddy routing, service registration, immutable image deployments and recovery boundaries.
+- **PDF artifacts and viewers** — evidence-based multilingual documents and safe PDF.js interaction layers.
+- **Website acceptance** — real-browser responsive, visual, accessibility and localized QA.
 - **Profiles** — predefined combinations of standards for common project types.
 
 Only the standards relevant to a project should be installed.
@@ -133,6 +136,10 @@ For example:
 
 Avoid putting unrelated concerns into one large instruction file.
 
+For portfolio-style websites, select [`website-qa`](./.agents/skills/website-qa/SKILL.md) when auditing complete user journeys, [`pdfjs-viewer`](./.agents/skills/pdfjs-viewer/SKILL.md) for an embedded PDF.js viewer, and [`pdf-documents`](./.agents/skills/pdf-documents/SKILL.md) when creating or updating downloadable PDF artifacts. These are independent, optional concerns; adding them to a profile does not mean Codex should load all three on every task.
+
+The existing [Docker skill](./.agents/skills/docker/SKILL.md) contains a static-site HTTP/container reference. The existing [Continuous Delivery skill](./.agents/skills/continuous-delivery/SKILL.md) contains a GHCR image-producer reference for repositories whose VPS deployment and shared reverse proxy are managed elsewhere. No unimplemented deployment controller is bundled with these standards.
+
 ### `profiles/`
 
 Profiles combine reusable standards for common project types.
@@ -166,6 +173,18 @@ Optional standards may be listed separately when they should only be applied for
 
 For Linux VPS provisioning, use [`ansible-infrastructure`](./profiles/ansible-infrastructure.yaml). It combines the [Ansible skill](./.agents/skills/ansible/SKILL.md) with task workflow, quality, GitHub Actions, documentation, and licensing standards. Add the optional `docker` skill when Docker-host setup is in scope, and `continuous-delivery` only when release deployment is in scope. Token-efficiency rules stay in the existing workflow/quality standards; Ansible-specific recap and validation guidance is in the Ansible skill.
 
+### Infrastructure acceptance and release lifecycle
+
+For multi-stage Linux host provisioning, the [Ansible skill](./.agents/skills/ansible/SKILL.md) routes to [staged initialization](./.agents/skills/ansible/references/staged-initialization.md) and [isolated VM E2E](./.agents/skills/ansible/references/vm-e2e.md) **only when relevant**. Keep independent stage verification, fail-closed recovery and SSH route transitions explicit. A recommended acceptance sequence is: targeted offline checks → independent CI → separately authorized VM E2E → separately authorized real-host provisioning/verification → post-reboot acceptance when required.
+
+Git delivery remains an independent approval boundary: feature PR to `develop` → release PR to `main` → user-authorized version tag/GitHub Release. Read the [Git delivery reference](./.agents/skills/task-development-workflow/references/git-delivery.md) for branch divergence, merge history and release checks. These are optional workflow phases, not automatic actions after successful CI.
+
+### Central Docker deployment platform
+
+For a single-VPS platform that manages the shared Caddy gateway and declaratively deploys Docker applications from independently published GHCR images, use [`docker-deployment-platform`](./profiles/docker-deployment-platform.yaml). This profile combines [`caddy-gateway`](./.agents/skills/caddy-gateway/SKILL.md) and [`gitops-deployment`](./.agents/skills/gitops-deployment/SKILL.md) with existing Docker, CI/CD, workflow and documentation standards.
+
+The [deployment platform bootstrap guide](./bootstrap/docker-deployment-platform.md) separates standards installation, offline controller development, local E2E and separately authorized production integration. It does **not** assume that a working controller, public DNS, HTTPS or VPS credentials already exist. Read only the skill references needed for the task; do not automatically install optional Ansible or Python skills.
+
 ### `bootstrap/`
 
 Contains initialization instructions for applying the standards to an existing or new repository.
@@ -197,6 +216,12 @@ Adapt the standards to the actual repository structure, architecture, tools, and
 
 Do not modify application business logic during initialization unless required for the development infrastructure.
 ```
+
+### Static Vue sites
+
+For a Vue 3 website served as built HTML/CSS/JavaScript files, use [`vue-static-site`](./profiles/vue-static-site.yaml). It fits portfolios, landing pages, documentation and other interactive sites without a required application backend. Static deployment does **not** mean the interface is non-interactive: localization, menus, modals and external API calls can still work. The profile installs the framework-agnostic [`seo`](./.agents/skills/seo/SKILL.md) skill: select a rendering/metadata approach, configure crawlable URLs, canonical/hreflang for multilingual sites, and verify built HTML. Use SSG/prerendering when indexable content needs to be present in the initial HTML.
+
+The [`design-to-vue`](./.agents/skills/design-to-vue/SKILL.md) skill applies when translating design references into Vue. The [bootstrap guide](./bootstrap/vue-static-site.md) covers a standards-only start and optional repository-specific authorization for `gh` PR delivery without automatic merge. Docker/CD remain optional. For server-side rendering or a mandatory backend, use another profile or extend the project deliberately.
 
 ### Ansible infrastructure project
 

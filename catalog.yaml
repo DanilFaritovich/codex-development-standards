@@ -17,8 +17,8 @@ sync:
 skills:
   task-development-workflow:
     path: .agents/skills/task-development-workflow/SKILL.md
-    tags: [workflow, development, git, pull-request, token-efficiency]
-    description: Standard workflow for implementing one development task.
+    tags: [workflow, development, git, pull-request, release, token-efficiency]
+    description: Task checkpoints, safe branch/PR delivery, independent validation evidence and optional versioned releases.
 
   standards-sync:
     path: .agents/skills/standards-sync/SKILL.md
@@ -62,13 +62,48 @@ skills:
 
   vue:
     path: .agents/skills/vue/SKILL.md
-    tags: [frontend, vue, typescript, api]
-    description: Vue frontend boundaries, state ownership, and backend integration.
+    tags: [frontend, vue, typescript, api, static-site, ssg]
+    description: Vue component and state boundaries, conditional backend integration and static-site/SSG lifecycle conventions.
 
   vue-testing:
     path: .agents/skills/vue-testing/SKILL.md
     tags: [frontend, vue, testing, vitest, e2e]
     description: Vue unit, component, integration, and E2E testing conventions.
+
+  design-to-vue:
+    path: .agents/skills/design-to-vue/SKILL.md
+    tags: [frontend, vue, figma, svg, responsive, design, accessibility, localization, token-efficiency]
+    description: Translate local Figma/SVG/PNG design references into responsive Vue interfaces with targeted visual QA.
+
+  seo:
+    path: .agents/skills/seo/SKILL.md
+    tags: [seo, discoverability, multilingual, hreflang, canonical, sitemap, robots, prerender, structured-data]
+    description: Framework-agnostic technical SEO for public sites, metadata, crawlable pages, language routes and release verification.
+
+  pdf-documents:
+    path: .agents/skills/pdf-documents/SKILL.md
+    tags: [pdf, documents, resume, localization, typography, links, validation]
+    description: Create and validate professional, role-targeted and multilingual selectable PDF documents with real clickable links.
+
+  pdfjs-viewer:
+    path: .agents/skills/pdfjs-viewer/SKILL.md
+    tags: [pdf, pdfjs, vue, viewer, annotation-layer, accessibility, responsive, testing]
+    description: Secure PDF.js previews, safe URL annotations, lazy workers, responsive sizing, and deterministic interaction tests.
+
+  website-qa:
+    path: .agents/skills/website-qa/SKILL.md
+    tags: [qa, website, playwright, visual, responsive, localization, accessibility, seo, testing]
+    description: Browser-based functional and visual QA, multilingual viewport matrices, accessible interactions and owner acceptance.
+
+  caddy-gateway:
+    path: .agents/skills/caddy-gateway/SKILL.md
+    tags: [caddy, gateway, reverse-proxy, https, tls, docker, routing, reload]
+    description: Shared Caddy HTTPS gateway, deterministic route generation, safe reloads, upstream isolation and live-TLS verification boundaries.
+
+  gitops-deployment:
+    path: .agents/skills/gitops-deployment/SKILL.md
+    tags: [gitops, deployment, controller, registry, reconcile, ghcr, digest, health, rollback]
+    description: Declarative Docker service registration, immutable GHCR image rollout, health-gated reconciliation and recovery for a single VPS.
 
   docker:
     path: .agents/skills/docker/SKILL.md
@@ -77,8 +112,8 @@ skills:
 
   ansible:
     path: .agents/skills/ansible/SKILL.md
-    tags: [ansible, infrastructure-as-code, linux, provisioning, ssh, firewall, token-efficiency]
-    description: Idempotent and safe Linux provisioning, host access, validation, and compact Ansible output.
+    tags: [ansible, infrastructure-as-code, linux, provisioning, ssh, firewall, e2e, vm, recovery, token-efficiency]
+    description: Idempotent Linux provisioning, staged initialization, VM E2E, safe SSH access and independent verification.
 
   github-actions:
     path: .agents/skills/github-actions/SKILL.md
@@ -92,8 +127,8 @@ skills:
 
   documentation:
     path: .agents/skills/documentation/SKILL.md
-    tags: [documentation, readme, agents, architecture, english, russian]
-    description: Opt-in documentation, bilingual portfolio README badges/presentation, and architecture map maintenance.
+    tags: [documentation, readme, audience, portfolio, agents, architecture, english, russian]
+    description: Opt-in documentation, compact audience-aware READMEs, verified portfolio badges and website links, bilingual parity and architecture maintenance.
 
   licensing:
     path: .agents/skills/licensing/SKILL.md
@@ -101,6 +136,13 @@ skills:
     description: License selection and preservation rules.
 
 profiles:
+  vue-static-site:
+    path: profiles/vue-static-site.yaml
+    tags: [vue, typescript, vite, static-site, frontend, i18n, seo, design-to-vue, github-actions]
+    description: >
+      Vue sites deployed as static assets: landing pages, portfolios, documentation
+      and interactive content sites, with targeted checks and optional Docker/CD.
+
   fastapi-vue-clean:
     path: profiles/fastapi-vue-clean.yaml
     tags:
@@ -118,6 +160,13 @@ profiles:
     description: >
       Full-stack FastAPI + Vue profile with clean backend architecture,
       testing, persistence, API guardrails, structured logging, Docker, CI, documentation, and licensing.
+
+  docker-deployment-platform:
+    path: profiles/docker-deployment-platform.yaml
+    tags: [deployment, gitops, caddy, docker, ghcr, reverse-proxy, single-vps, github-actions]
+    description: >
+      A central single-VPS Docker Compose deployment platform with a shared Caddy
+      gateway, service registry, verified image digests, offline CI and gated rollouts.
 
   ansible-infrastructure:
     path: profiles/ansible-infrastructure.yaml

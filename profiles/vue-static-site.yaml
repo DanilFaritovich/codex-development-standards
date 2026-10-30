@@ -1,0 +1,83 @@
+name: vue-static-site
+version: 3
+
+description: >
+  Statically deployed Vue 3 + TypeScript websites, such as portfolios,
+  product landing pages, documentation and interactive content sites.
+  Build produces static HTML/CSS/JS assets; client-side interaction and
+  optional external APIs are supported. No dedicated backend is required.
+
+skills:
+  - task-development-workflow
+  - standards-sync
+  - code-quality
+  - vue
+  - vue-testing
+  - design-to-vue
+  - seo
+  - github-actions
+  - documentation
+
+optional_skills:
+  - website-qa
+  - pdfjs-viewer
+  - pdf-documents
+  - docker
+  - continuous-delivery
+  - licensing
+
+defaults:
+  standards_sync:
+    lock_file: .codex-standards.lock.yaml
+    incremental: true
+  branches:
+    integration: develop
+    stable: main
+    task_base: develop
+  frontend:
+    framework: vue
+    language: typescript
+    build: vite
+    deployment: static-assets
+    rendering: choose-csr-or-prerender-based-on-indexing-needs
+    content: local-or-external-api
+    no_dedicated_backend_by_default: true
+    localization: vue-i18n-when-needed
+    multilingual_seo:
+      enable_for_translated_sites: true
+      direct_language_paths: true
+      metadata_and_hreflang_per_locale: true
+    validation:
+      - eslint
+      - prettier
+      - vue-tsc
+      - vitest
+      - playwright-for-critical-flows
+  design:
+    local_references: design/reference/
+    guidelines: design/DESIGN.md
+    visual_qa: browser-screenshots-when-references-exist
+  seo:
+    apply_skill: seo
+    public_html_inspection: true
+    generate_sitemap_for_indexable_routes: true
+    no_production_domain_until_known: true
+  checks:
+    local: "make fix -> targeted checks -> make check"
+    extended: make verify
+    ci: make ci
+  remote_delivery:
+    policy: project-specific-standing-authorization-only
+    tool: gh
+    approved_flow: "local commit -> push task branch -> PR to develop -> stop before merge"
+
+adaptation:
+  install_only_applicable_skills: true
+  install_optional_skills_only_for_active_work: true
+  preserve_project_specific_instructions: true
+  do_not_add_backend_databases_or_global_store_without_requirement: true
+  select_other_profile_or_extend_when_backend_or_server_rendering_required: true
+  consider_ssg_or_prerender_when_search_indexing_requires_static_html: true
+  create_architecture_md_only_when_requested: true
+  create_project_specific_agents_md_during_explicit_bootstrap: true
+  do_not_require_figma_mcp_for_local_design_references: true

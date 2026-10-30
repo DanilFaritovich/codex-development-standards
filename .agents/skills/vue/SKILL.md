@@ -1,13 +1,15 @@
 ---
 name: vue
-description: Vue frontend conventions for API integration, component boundaries, state ownership, routing, composables, types, and keeping backend business data authoritative. Use when creating or modifying a Vue frontend that communicates with a backend API.
+description: Vue application conventions for component boundaries, state, routing, composables and types, with conditional API integration and static-site/SSG guidance. Use when creating or modifying Vue applications, including sites without a backend.
 ---
 
 # Vue Frontend Standard
 
-Build the frontend as a presentation client for backend capabilities.
+Build Vue applications around their actual source of data: local content, external APIs or an application backend. A static site does not require a backend, API layer, database or global store.
 
-The backend is the source of truth for persistent application/domain data and business decisions. The frontend owns presentation behavior and temporary UI state.
+When an API/backend owns persistent domain data and business decisions, it remains authoritative; do not recreate those rules in the frontend. The frontend owns presentation behavior and temporary UI state. Git-managed content may be authoritative for a static catalog.
+
+For static content sites or SSG/prerender work, read [references/static-sites.md](references/static-sites.md). API-specific rules below apply only when the project actually uses an API; do not scaffold an API client solely to satisfy this skill.
 
 ## Responsibility boundary
 
@@ -38,7 +40,7 @@ Frontend may hold:
 - loading state;
 - local presentation preferences.
 
-Do not use browser storage or frontend state as the authoritative persistence layer for core business data.
+Do not use browser storage or frontend state to replace backend-owned core business persistence. This does not prohibit local content or intentionally local-only application state when required by the product.
 
 ## Suggested structure
 
@@ -56,7 +58,7 @@ src/
 
 Adapt this to the existing project instead of forcing unnecessary restructuring.
 
-## API layer
+## API layer (when applicable)
 
 Centralize backend communication in `api/` or an equivalent module.
 
@@ -123,9 +125,9 @@ Avoid implicit `any` for API data.
 
 ## Validation
 
-Client-side validation improves user experience but does not replace backend validation.
+For API-backed operations, client-side validation improves user experience but does not replace backend validation.
 
-The backend must validate all data required for correctness and security.
+Any receiving backend must validate all data required for correctness and security.
 
 Simple validation rules may be mirrored in the UI for immediate feedback, but backend results remain authoritative.
 
@@ -137,7 +139,7 @@ Use local/component state when sufficient.
 
 Introduce Pinia or the project's chosen store when state is genuinely shared across unrelated areas or benefits from centralized lifecycle management.
 
-Persistent business state still belongs to the backend.
+Persistent state owned by a backend stays there; a static site may use local content and presentation preferences without one.
 
 ## Routing
 
