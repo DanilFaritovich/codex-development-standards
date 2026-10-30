@@ -128,7 +128,7 @@ skills:
   documentation:
     path: .agents/skills/documentation/SKILL.md
     tags: [documentation, readme, audience, portfolio, agents, architecture, english, russian]
-    description: Compact audience-aware READMEs, website and technology presentation, documentation timing, language modes and architecture updates.
+    description: Opt-in documentation, compact audience-aware READMEs, verified portfolio badges and website links, bilingual parity and architecture maintenance.
 
   licensing:
     path: .agents/skills/licensing/SKILL.md

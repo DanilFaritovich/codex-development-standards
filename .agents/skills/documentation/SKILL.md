@@ -1,6 +1,6 @@
 ---
 name: documentation
-description: Write compact, audience-aware READMEs and maintain requested project documentation, with a narrow automatic ARCHITECTURE.md update for material architecture changes.
+description: Opt-in documentation and compact audience-aware READMEs, including bilingual portfolio presentation and verified badges, with narrow existing ARCHITECTURE.md maintenance.
 ---
 
 # Documentation Standard
@@ -69,6 +69,8 @@ Both versions must describe the same project state.
 The root README is the primary entry point, not a combined implementation log and operator manual.
 
 When creating, rewriting or reviewing a README, read [references/readme-authoring.md](references/readme-authoring.md). It covers audience, a prominent real website link, technology presentation and compact project explanations; adapt its suggested structure to the project.
+
+For requested public/portfolio README presentation work, also read [references/portfolio-readme.md](references/portfolio-readme.md) for detailed badge verification and presentation examples. Do not load that portfolio-specific reference for private/internal projects, normal coding or unrelated documentation changes.
 
 - Lead with what the project does, who it helps and its useful outcome. For portfolio projects, make engineering value understandable to users, developers and HR without repeating the same explanation in three sections.
 - Include the technologies actually used and the engineering choices that explain the project, not just a list of tools.
@@ -183,7 +185,8 @@ For explicitly requested documentation, before the local commit or an authorized
 - verify commands;
 - remove stale instructions;
 - ensure language versions stay aligned;
-- ensure architecture descriptions match the actual implementation.
-- check that the introduction explains the purpose, the website/author links are accurately labeled, technologies match the repository and repeated detail is removed.
+- ensure architecture descriptions match the actual implementation;
+- check that the introduction explains the purpose, the website/author links are accurately labeled, technologies match the repository and repeated detail is removed;
+- for requested portfolio README updates, verify every badge's technology/version, CI workflow, status, license, URL, image and alt text against the actual repository; do not show unsupported claims.
 
 Do not rerun unrelated application tests solely because prose documentation changed after successful code validation, unless documentation generation itself is executable/validated.
