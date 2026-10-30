@@ -127,8 +127,8 @@ skills:
 
   documentation:
     path: .agents/skills/documentation/SKILL.md
-    tags: [documentation, readme, agents, architecture, english, russian]
-    description: Documentation timing, README language modes, AGENTS.md, and ARCHITECTURE.md rules.
+    tags: [documentation, readme, audience, portfolio, agents, architecture, english, russian]
+    description: Compact audience-aware READMEs, website and technology presentation, documentation timing, language modes and architecture updates.
 
   licensing:
     path: .agents/skills/licensing/SKILL.md
