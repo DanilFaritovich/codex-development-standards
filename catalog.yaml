@@ -62,8 +62,8 @@ skills:
 
   vue:
     path: .agents/skills/vue/SKILL.md
-    tags: [frontend, vue, typescript, api]
-    description: Vue frontend boundaries, state ownership, and backend integration.
+    tags: [frontend, vue, typescript, api, static-site, ssg]
+    description: Vue component and state boundaries, conditional backend integration and static-site/SSG lifecycle conventions.
 
   vue-testing:
     path: .agents/skills/vue-testing/SKILL.md
@@ -127,8 +127,8 @@ skills:
 
   documentation:
     path: .agents/skills/documentation/SKILL.md
-    tags: [documentation, readme, agents, architecture, english, russian]
-    description: Documentation timing, README language modes, AGENTS.md, and ARCHITECTURE.md rules.
+    tags: [documentation, readme, audience, portfolio, agents, architecture, english, russian]
+    description: Opt-in documentation, compact audience-aware READMEs, verified portfolio badges and website links, bilingual parity and architecture maintenance.
 
   licensing:
     path: .agents/skills/licensing/SKILL.md
