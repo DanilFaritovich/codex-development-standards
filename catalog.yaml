@@ -62,8 +62,8 @@ skills:
 
   vue:
     path: .agents/skills/vue/SKILL.md
-    tags: [frontend, vue, typescript, api]
-    description: Vue frontend boundaries, state ownership, and backend integration.
+    tags: [frontend, vue, typescript, api, static-site, ssg]
+    description: Vue component and state boundaries, conditional backend integration and static-site/SSG lifecycle conventions.
 
   vue-testing:
     path: .agents/skills/vue-testing/SKILL.md
